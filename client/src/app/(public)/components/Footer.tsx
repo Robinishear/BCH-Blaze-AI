@@ -4,7 +4,6 @@ import { useState, type ComponentProps } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight, Check, Copy, ExternalLink, Heart, Presentation } from 'lucide-react';
 
-// 👉 আসল লিংক বসাও (EMBER অ্যাড্রেস ব্যানারের সাথে একই রাখো)
 const LINKS = {
   github: 'https://github.com/Robinishear/your-repo',
   presentation: 'https://docs.google.com/presentation/d/your-deck-id',
@@ -115,7 +114,7 @@ export function Footer() {
               <span className="flex size-9 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/10 text-lg font-black leading-none text-emerald-300 shadow-[0_0_24px_rgba(16,185,129,0.12)] transition-colors group-hover:border-emerald-300/60">
                 ₿
               </span>
-              <span className="text-lg font-semibold tracking-tight text-white">BCH BLAZE</span>
+              <span className="text-lg font-semibold tracking-tight text-white">BCH BLAZE AI</span>
             </Link>
 
             <p className="mt-5 max-w-xs text-sm leading-relaxed text-gray-400">

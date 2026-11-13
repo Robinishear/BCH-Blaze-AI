@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 
-// TODO: replace these demo values with the real credentials.
 const DEMO_ACCOUNTS = {
   admin: { label: "Admin", email: "vgairoggbin@gmail.com", password: "123456789" },
   user: { label: "User", email: "vai@gmail.com", password: "123456789" },
@@ -10,7 +9,6 @@ const DEMO_ACCOUNTS = {
 
 type Role = keyof typeof DEMO_ACCOUNTS;
 
-// Sets an input value the way typing would, so React picks it up.
 function setValue(input: HTMLInputElement, value: string) {
   const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
   setter?.call(input, value);

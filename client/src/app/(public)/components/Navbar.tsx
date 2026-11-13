@@ -126,7 +126,7 @@ export const Navbar = ({ authButtons }: { authButtons: React.ReactNode }) => {
 
           <div>
             <h1 className="text-sm font-black tracking-[0.22em] text-white">
-              BCH <span className="text-emerald-400">BLAZE</span>
+              BCH <span className="text-emerald-400">BLAZE AI</span>
             </h1>
             <p className="mt-1 text-[9px] font-medium tracking-[0.25em] text-emerald-100/35">
               BLOCKCHAIN ECOSYSTEM
