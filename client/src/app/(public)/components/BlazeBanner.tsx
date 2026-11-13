@@ -10,8 +10,8 @@ import { Button } from '@/components/ui/button';
 
 const EVENT = { name: 'BCH BLAZE 2026', track: 'Mainnet Track' };
 const PRESENTATION_URL = 'https://docs.google.com/presentation/d/...';
-const REPO_URL = 'https://github.com/Robinishear/your-repo';
-const EMBER_ADDRESS = 'bitcoincash:qqcrvq0f7stvdqr3uu38vmykufluuuwk75h4cdl9e6';
+const REPO_URL = 'https://github.com/Robinishear/BCH-Blaze-AI';
+const EMBER_ADDRESS = 'bitcoincash:zpfug783apup8mzxmtgtxwhl6h9kjty5mc0trt2spu';
 
 const CHECKS = ['Live on BCH Mainnet', 'WizardConnect', 'Open source'];
 
