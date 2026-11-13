@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import type { ComponentProps, ReactNode } from "react";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,18 +46,36 @@ export function AuthCard({ eyebrow, title, subtitle, footerText, footerLabel, fo
 
 type FormFieldProps = ComponentProps<typeof Input> & { name: string; label: string };
 
-export function FormField({ name, label, ...props }: FormFieldProps) {
+export function FormField({ name, label, type, ...props }: FormFieldProps) {
+  const [show, setShow] = useState(false);
+  const isPassword = type === "password";
+
   return (
     <div className="space-y-2">
       <Label htmlFor={name} className="text-sm text-gray-300">
         {label}
       </Label>
-      <Input
-        id={name}
-        name={name}
-        className="h-11 rounded-xl border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20"
-        {...props}
-      />
+      <div className="relative">
+        <Input
+          id={name}
+          name={name}
+          type={isPassword && show ? "text" : type}
+          className={`h-11 rounded-xl border-white/10 bg-white/5 text-white placeholder:text-gray-500 focus-visible:border-emerald-500/50 focus-visible:ring-emerald-500/20 ${
+            isPassword ? "pr-11" : ""
+          }`}
+          {...props}
+        />
+        {isPassword && (
+          <button
+            type="button"
+            onClick={() => setShow((s) => !s)}
+            aria-label={show ? "Hide password" : "Show password"}
+            className="absolute inset-y-0 right-0 flex w-11 items-center justify-center text-gray-400 transition-colors hover:text-emerald-300"
+          >
+            {show ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
