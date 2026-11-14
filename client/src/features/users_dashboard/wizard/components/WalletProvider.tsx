@@ -8,7 +8,7 @@ type WalletContextValue = ReturnType<typeof useWizardConnect>;
 const WalletContext = createContext<WalletContextValue | null>(null);
 
 export function WalletProvider({ children }: { children: React.ReactNode }) {
-  const wallet = useWizardConnect({ dappName: "BCH 402 AI Gateway" });
+  const wallet = useWizardConnect({ dappName: "BCH BLAZE AI" });
 
   return <WalletContext.Provider value={wallet}>{children}</WalletContext.Provider>;
 }

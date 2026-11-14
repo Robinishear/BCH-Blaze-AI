@@ -56,8 +56,6 @@ export interface Pending {
 }
 // * DONE
 
-
-
 export type PayStep = "looking" | "confirm" | "sent";
 
 export interface PayArgs {
@@ -71,15 +69,15 @@ export interface PayArgs {
   electrumUrl?: string;
 }
 
-
-
 export interface Props {
   payAddress: string;
   amountSats: string;
   amountBch: string;
   feature: string;
-}
+ //add quick-pay invoice price comment
+  priceUsdCents?: number;
 
+}
 
 
 export interface BuildArgs {

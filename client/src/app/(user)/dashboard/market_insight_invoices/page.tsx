@@ -1,6 +1,7 @@
 import PlaygroundForm from "@/features/users_dashboard/invoices/components/PlaygroundForm";
 import { getPricing } from "@/features/users_dashboard/pricing/_core/pricing.service";
 import ConnectWalletButton from "@/features/users_dashboard/wizard/components/ConnectWalletButton";
+import SessionWalletCard from "@/features/users_dashboard/wizard/components/SessionWalletCard";
 // import { WalletProvider } from "@/features/users_dashboard/wizard/components/WalletProvider";
 
 function LoadError() {
@@ -33,8 +34,11 @@ export default async function MarketInsightPage() {
             </p>
           </div>
 {/* <WalletCheck /> */}
-          <ConnectWalletButton />
-        </header>
+ <div className="flex flex-col items-end gap-3">
+            <ConnectWalletButton />
+            {/* new add line */}
+            <SessionWalletCard runSats={Math.max(0, ...pricing.features.map((f) => Number(f.amountSats)))} />
+          </div>        </header>
 
         <PlaygroundForm pricing={pricing} />
       </div>

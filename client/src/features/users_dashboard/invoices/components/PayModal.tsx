@@ -78,6 +78,8 @@ export default function PayModal({ invoice: initialInvoice, onClose, onPaid, run
   amountSats={invoice.amountSats}
   amountBch={invoice.amountBch}
   feature={invoice.feature}
+  // new 
+    priceUsdCents={invoice.priceUsdCents}
 />
 
 <p className="text-center text-xs text-gray-400">or scan with any wallet</p>

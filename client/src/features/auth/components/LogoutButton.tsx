@@ -5,6 +5,7 @@ import { cn } from '@/_core/utils/utils';
 import { handleLogout } from '../core/auth.actions';
 import { authBtn } from './constants';
 import { useWalletOptional } from '@/features/users_dashboard/wizard/components/WalletProvider';
+import { sweepSessionQuietly } from '@/features/users_dashboard/wizard/_core/session.wallet';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -24,6 +25,8 @@ export default function LogoutButton() {
   const wallet = useWalletOptional();
 
   const onLogoutAction = async () => {
+    // new line add Return the quick-pay balance to the wallet before the session ends.
+    await sweepSessionQuietly();
     await wallet?.disconnect();
 
     try {

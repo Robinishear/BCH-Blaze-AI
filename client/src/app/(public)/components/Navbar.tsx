@@ -6,7 +6,6 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/_core/utils/utils';
 
 // const BRAND = 'BCH BLAZE';
-
 const LINKS = [
   { href: '/', label: 'Home' },
   { href: '/docs', label: 'Docs' },
@@ -153,7 +152,6 @@ export const Navbar = ({ authButtons }: { authButtons: React.ReactNode }) => {
           </button>
         </div>
 
-        {/* Mobile menu */}
         <div
           className={cn(
             'grid transition-[grid-template-rows] duration-300 ease-out md:hidden',

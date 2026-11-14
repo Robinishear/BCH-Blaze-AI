@@ -14,9 +14,6 @@ import { isUniqueViolation, satsToBch, toPublic } from "./invoice.utils";
 import { notifyInvoiceCreated } from "../../../workers/signal";
 import { mockChain } from "../chain/chain.mock";
 
-
-
-
 // * createInvoice 
 const createInvoice = async (
   userId: string | null,

@@ -15,3 +15,7 @@ export const OVERHEAD_BYTES = 10;
 
 export const SLOW_AFTER_MS = 8000;
 
+
+export const MAX_RUNS = 20;
+export const STORAGE_KEY = "blaze-session-wallet-v1";
+export const CHANGE_EVENT = "blaze-session-changed";
