@@ -11,10 +11,19 @@ export default function PriceTag({
     .replace(/0+$/, "")
     .replace(/\.$/, "");
 
+    
+  // return (
+  //   <div>
+  //     <span className="text-lg font-bold">${usd}</span>
+  //     <span className="ml-2 text-xs text-gray-400">≈ {bch} BCH</span>
+  //   </div>
+  // );
+    const sats = Number(amountSats).toLocaleString("en-US");
+
   return (
     <div>
-      <span className="text-lg font-bold">${usd}</span>
-      <span className="ml-2 text-xs text-gray-400">≈ {bch} BCH</span>
+      <span className="text-lg font-bold">{sats} sats</span>
+      <span className="ml-2 text-xs text-gray-400">≈ ${usd}</span>
     </div>
   );
 }

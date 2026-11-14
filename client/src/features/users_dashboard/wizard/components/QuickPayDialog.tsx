@@ -8,7 +8,6 @@ interface Props {
   amountSats: bigint;
   priceUsdCents: number;
   walletName?: string;
-  /** Progress reported by the parent while the payment is running. */
   step: QuickStep | "idle";
   error: string;
   onConfirm: (runs: number) => void;

@@ -110,7 +110,7 @@ export default function PlaygroundForm({ pricing }: { pricing: PricingData }) {
             </span>
           </div>
 
-          <div className="mt-5 flex items-end justify-between gap-3 border-y border-white/10 py-4">
+          {/* <div className="mt-5 flex items-end justify-between gap-3 border-y border-white/10 py-4">
             <div>
               <p className="text-3xl font-semibold tabular-nums tracking-tight text-white">
                 {selected ? formatUsd(selected.priceUsdCents) : "—"}
@@ -122,7 +122,22 @@ export default function PlaygroundForm({ pricing }: { pricing: PricingData }) {
                 {formatNumber(selected.amountSats)} <span className="text-gray-400">sats</span>
               </p>
             )}
-          </div>
+          </div> */}
+
+          <div className="mt-5 flex items-end justify-between gap-3 border-y border-white/10 py-4">
+  <div>
+    <p className="text-3xl font-semibold tabular-nums tracking-tight text-white">
+      {selected ? formatNumber(selected.amountSats) : "—"}{" "}
+      <span className="text-lg font-normal text-gray-400">sats</span>
+    </p>
+    <p className="mt-0.5 text-xs text-gray-500">per request</p>
+  </div>
+  {selected && (
+    <p className="rounded-md border border-white/10 bg-black/20 px-2.5 py-1 font-mono text-sm text-emerald-300">
+      ≈ {formatUsd(selected.priceUsdCents)}
+    </p>
+  )}
+</div>
 
           <ul className="mt-4 space-y-2.5">
             {NEXT_STEPS.map((step) => (

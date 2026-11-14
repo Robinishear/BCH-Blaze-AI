@@ -23,6 +23,7 @@
     "locktime",
     "Multichain",
     "qrcode",
+    "quickpay",
     "Satoshis",
     "scripthash",
     "swal",
