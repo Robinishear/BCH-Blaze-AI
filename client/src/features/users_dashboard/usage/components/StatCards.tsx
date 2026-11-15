@@ -20,7 +20,6 @@ type Tone = keyof typeof TONES;
 type Stat = {
   label: string;
   value: number | string;
-  /** optional second line, also counted up */
   sub?: { value: number | string; suffix: string };
   prefix?: string;
   icon: LucideIcon;
@@ -31,7 +30,6 @@ type Stat = {
 const COUNT_MS = 1800;
 const STAGGER_MS = 130;
 
-/** Counts from 0 up to the real value once the card scrolls into view. Keeps the same decimals as the data. */
 function CountUp({
   value,
   prefix = "",
@@ -68,7 +66,7 @@ function CountUp({
         const step = (t: number) => {
           if (!t0) t0 = t;
           const p = Math.min(1, (t - t0) / COUNT_MS);
-          const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p); // easeOutExpo
+          const eased = p === 1 ? 1 : 1 - Math.pow(2, -10 * p);
           setN(target * eased);
           if (p < 1) raf = requestAnimationFrame(step);
         };
@@ -138,7 +136,6 @@ export default function StatCards({ summary }: { summary: UsageSummary }) {
               featured ? "sc-featured col-span-2 bg-emerald-500/5 lg:col-span-1" : "bg-white/3",
             )}
           >
-            {/* tone glow + dot pattern + big watermark icon */}
             <span aria-hidden className="sc-glow pointer-events-none absolute -right-12 -top-12 size-36 rounded-full" />
             <span aria-hidden className="sc-dots pointer-events-none absolute inset-0" />
             <Icon aria-hidden className="sc-mark pointer-events-none absolute -bottom-5 -right-4 size-24" strokeWidth={1.25} />
@@ -171,15 +168,20 @@ export default function StatCards({ summary }: { summary: UsageSummary }) {
             )}
 
             {/* fills while the numbers count up */}
-            <span aria-hidden className="sc-bar absolute inset-x-0 bottom-0 h-0.5" />
+            {/* <span aria-hidden className="sc-bar absolute inset-x-0 bottom-0 h-0.5" /> */}
           </div>
         );
       })}
 
+
+
+
+
+
+
       <style>{`
         .sc-in { opacity: 0; animation: sc-in .7s cubic-bezier(.2,.8,.2,1) forwards; animation-delay: calc(var(--d) - 150ms); }
 
-        .sc-card { box-shadow: 0 12px 30px -20px rgba(0,0,0,.7); }
         .sc-card:hover { box-shadow: 0 22px 50px -22px rgb(var(--tone) / .6), 0 0 0 0 transparent; }
 
         .sc-glow { background: radial-gradient(circle, rgb(var(--tone) / .22), transparent 70%); opacity: .55; transition: opacity .4s ease, transform .6s ease; }
