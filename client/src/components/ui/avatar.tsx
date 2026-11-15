@@ -9,6 +9,7 @@ function Avatar({
   size = "default",
   ...props
 }: AvatarPrimitive.Root.Props & {
+  // jfg gnd 
   size?: "default" | "sm" | "lg"
 }) {
   return (

@@ -191,7 +191,6 @@ export default function BlazePage() {
         </div>
       </header>
 
-      {/* Quick test */}
       <section className="mt-14 rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5 sm:p-7">
         <div className="grid gap-6 lg:grid-cols-[1fr_1.4fr]">
           <div>
@@ -221,7 +220,6 @@ export default function BlazePage() {
         <SystemFlow />
       </section>
 
-      {/* Journey */}
       <section className="mt-16">
         <SectionTitle note="Each step shows where the work happens: in your browser, in your wallet, on our server, on the Bitcoin Cash network, or at Gemini.">
           What happens, step by step

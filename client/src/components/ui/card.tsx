@@ -8,6 +8,7 @@ function Card({
 }: React.ComponentProps<"div"> & { size?: "default" | "sm" }) {
   return (
     <div
+    
       data-slot="card"
       data-size={size}
       className={cn(

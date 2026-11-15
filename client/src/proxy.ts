@@ -14,7 +14,6 @@ const readRole = (token?: string): UserRole | null => {
   if (typeof decoded.exp === "number" && decoded.exp * 1000 < Date.now()) return null; 
   return decoded.role === "ADMIN" || decoded.role === "USER" ? decoded.role : null;
 };
-
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl;
   const routeOwner = getRouteOwner(pathname);
