@@ -2,11 +2,6 @@
 
 import { useEffect, useRef } from "react";
 
-/* ------------------------------------------------------------------ */
-/*  Interactive blockchain network canvas (from the 404 page)          */
-/*  GPU-friendly, DPR capped, paused when tab hidden, reduced-motion   */
-/* ------------------------------------------------------------------ */
-
 function NetworkCanvas() {
   const ref = useRef<HTMLCanvasElement>(null);
 

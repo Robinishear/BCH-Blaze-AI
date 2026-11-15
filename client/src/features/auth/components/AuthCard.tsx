@@ -14,8 +14,8 @@ import { AuthCardProps } from "./constants";
 export function AuthCard({ eyebrow, title, subtitle, footerText, footerLabel, footerHref, children }: AuthCardProps) {
   return (
     <div className="mx-auto my-12 w-full max-w-md px-3">
-      <div className="rounded-3xl bg-linear-to-b from-emerald-500/40 via-white/10 to-white/5 p-px shadow-[0_24px_80px_-20px_rgba(16,185,129,0.35)]">
-        <div className="rounded-[23px] bg-[#04100c]/90 p-6 sm:p-8">
+      <div className="rounded-3xl bg-linear-to-b from-emerald-800/40 via-white/10 to-white/5 p-px shadow-[0_24px_80px_-20px_rgba(16,185,129,0.35)]">
+        <div className="rounded-[23px]  p-6 sm:p-8">
           <div className="text-center">
             <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-emerald-400/80">{eyebrow}</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-white">{title}</h2>
