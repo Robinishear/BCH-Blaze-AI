@@ -8,8 +8,7 @@ import { cn } from '@/_core/utils/utils';
 // const BRAND = 'BCH BLAZE';
 const LINKS = [
   { href: '/', label: 'Home' },
-  { href: '/docs', label: 'Docs' },
-  { href: '/api-access', label: 'API Access' },
+  // { href: '/docs', label: 'Docs' },
   { href: '/blaze', label: 'BLAZE 2026' },
 ];
 
