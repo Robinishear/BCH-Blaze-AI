@@ -1,0 +1,104 @@
+.lm-root { width: var(--lm-size, 180px); margin-inline: auto; }
+.lm-svg { display: block; width: 100%; height: auto; overflow: hidden; }
+
+/* ---------- idle: float + breathe ---------- */
+.lm-bob { animation: lm-bob 3.4s ease-in-out infinite; transform-origin: 100px 180px; }
+.lm-shadow { animation: lm-shadow 3.4s ease-in-out infinite; transform-origin: 100px 176px; }
+
+/* ---------- head (tilt / shake) ---------- */
+.lm-head {
+  transform-origin: 100px 150px;
+  transition: transform .5s cubic-bezier(.2,.9,.3,1.2);
+}
+.lm-svg[data-state="email"] .lm-head { transform: rotate(-3.5deg) translateY(2px); }
+.lm-svg[data-state="password"] .lm-head { transform: translateY(3px); }
+.lm-svg[data-state="error"] .lm-head { animation: lm-shake .55s ease-in-out; }
+
+/* ---------- eyes ---------- */
+.lm-eye { animation: lm-blink 5.2s infinite; transition: transform .25s ease, opacity .2s ease; }
+.lm-eye-l { transform-origin: 76px 92px; }
+.lm-eye-r { transform-origin: 124px 92px; animation-delay: .04s; }
+
+.lm-pupil {
+  transform: translate(var(--lm-px, 0px), var(--lm-py, 0px));
+  transition: transform .22s ease-out;
+}
+.lm-orbit { transition: transform .3s ease; }
+.lm-eye-l .lm-orbit { transform-origin: 76px 92px; }
+.lm-eye-r .lm-orbit { transform-origin: 124px 92px; }
+
+/* closed while paws cover them */
+.lm-svg[data-state="password"] .lm-eye {
+  animation: none;
+  transform: scaleY(.08);
+  transition-delay: .18s;
+}
+
+/* loading: dizzy orbiting pupils */
+.lm-svg[data-state="loading"] .lm-pupil { transform: translate(3.2px, 0); }
+.lm-svg[data-state="loading"] .lm-orbit { animation: lm-orbit .8s linear infinite; }
+
+/* success: ^ ^ eyes */
+.lm-arcs { opacity: 0; transition: opacity .2s ease; }
+.lm-svg[data-state="success"] .lm-arcs { opacity: 1; }
+.lm-svg[data-state="success"] .lm-eye { opacity: 0; animation: none; }
+
+/* worried brows */
+.lm-brows { opacity: 0; transition: opacity .25s ease; }
+.lm-svg[data-state="error"] .lm-brows { opacity: 1; }
+
+/* ---------- cheeks ---------- */
+.lm-cheek { opacity: 0; transition: opacity .3s ease; }
+.lm-svg[data-state="success"] .lm-cheek,
+.lm-svg[data-state="password"] .lm-cheek { opacity: .55; }
+
+/* ---------- mouth ---------- */
+.lm-mouth { opacity: 0; transition: opacity .2s ease; }
+.lm-mouth-idle { opacity: 1; }
+.lm-svg[data-state="success"] .lm-mouth-idle,
+.lm-svg[data-state="error"] .lm-mouth-idle,
+.lm-svg[data-state="loading"] .lm-mouth-idle { opacity: 0; }
+.lm-svg[data-state="success"] .lm-mouth-happy { opacity: 1; }
+.lm-svg[data-state="error"] .lm-mouth-sad { opacity: 1; }
+.lm-svg[data-state="loading"] .lm-mouth-o { opacity: 1; animation: lm-o 1.2s ease-in-out infinite; transform-origin: 100px 127px; }
+
+/* sweat drop */
+.lm-sweat { opacity: 0; }
+.lm-svg[data-state="error"] .lm-sweat { animation: lm-sweat 1.4s ease-in .1s both; }
+
+/* ---------- paws ---------- */
+.lm-paw {
+  transform: translateY(118px);
+  transition: transform .55s cubic-bezier(.34,1.56,.64,1);
+}
+.lm-paw-r { transition-delay: .05s; }
+.lm-svg[data-state="password"] .lm-paw { transform: translateY(0); }
+.lm-svg[data-state="password"] .lm-paw-l { transform: translateY(0) rotate(6deg); transform-origin: 76px 96px; }
+.lm-svg[data-state="password"] .lm-paw-r { transform: translateY(0) rotate(-6deg); transform-origin: 124px 96px; }
+
+/* ---------- success: jump + sparkles ---------- */
+.lm-svg[data-state="success"] .lm-bob { animation: lm-jump .7s cubic-bezier(.3,.8,.4,1) 2; }
+.lm-sp { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.lm-svg[data-state="success"] .lm-sp { animation: lm-spark 1.1s ease-out infinite; }
+.lm-sp-2 { animation-delay: .15s !important; }
+.lm-sp-3 { animation-delay: .3s !important; }
+.lm-sp-4 { animation-delay: .45s !important; }
+
+/* ---------- keyframes ---------- */
+@keyframes lm-bob { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-3px) scale(1.012); } }
+@keyframes lm-shadow { 0%,100% { transform: scaleX(1); opacity: 1; } 50% { transform: scaleX(.92); opacity: .7; } }
+@keyframes lm-blink { 0%,94%,100% { transform: scaleY(1); } 96.5% { transform: scaleY(.08); } }
+@keyframes lm-shake { 0%,100% { transform: rotate(0); } 18% { transform: rotate(-7deg); } 36% { transform: rotate(6deg); } 54% { transform: rotate(-4deg); } 72% { transform: rotate(3deg); } }
+@keyframes lm-orbit { to { transform: rotate(360deg); } }
+@keyframes lm-o { 0%,100% { transform: scale(1); } 50% { transform: scale(.7); } }
+@keyframes lm-sweat { 0% { opacity: 0; transform: translateY(-4px); } 25% { opacity: 1; } 100% { opacity: 0; transform: translateY(16px); } }
+@keyframes lm-jump { 0%,100% { transform: translateY(0); } 45% { transform: translateY(-14px); } }
+@keyframes lm-spark { 0% { opacity: 0; transform: translateY(6px) scale(.4); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(-16px) scale(1.2); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lm-bob, .lm-shadow, .lm-eye, .lm-svg[data-state="error"] .lm-head,
+  .lm-svg[data-state="loading"] .lm-orbit, .lm-svg[data-state="loading"] .lm-mouth-o,
+  .lm-svg[data-state="error"] .lm-sweat, .lm-svg[data-state="success"] .lm-bob,
+  .lm-svg[data-state="success"] .lm-sp { animation: none !important; }
+  .lm-paw, .lm-head, .lm-pupil { transition: none; }
+}
