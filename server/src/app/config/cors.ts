@@ -7,8 +7,7 @@ const cors = createCors({
   origin,
   credentials: true,
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  // allowedHeaders: ["Content-Type", "Authorization"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Invoice-Id"],
+  allowedHeaders: ["Content-Type", "Authorization"],
 });
 
 export { cors };
