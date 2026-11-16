@@ -9,7 +9,7 @@ import './css/Footer.css';
 const LINKS = {
   github: 'https://github.com/Robinishear/BCH-Blaze-AI',
   presentation: 'https://docs.google.com/presentation/d/your-deck-id',
-  hackathon: 'https://dorahacks.io/hackathon/bch-blaze-2026',
+  hackathon: 'https://dorahacks.io/hackathon/bchblaze2026/detail#contact',
 };
 const DONATION_ADDRESS = 'bitcoincash:zpfug783apup8mzxmtgtxwhl6h9kjty5mc0trt2spu';
 

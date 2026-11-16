@@ -11,7 +11,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         className="pointer-events-none fixed inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] bg-size-[48px_48px] mask-[radial-gradient(ellipse_80%_60%_at_50%_0%,black,transparent)]"
       />
 
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 border-r border-white/10 bg-[#04100c]/90 lg:block">
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 border-r border-white/10 bg-white/10 lg:block">
         <AdminSidebarContent />
       </aside>
 

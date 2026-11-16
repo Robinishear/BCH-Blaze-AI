@@ -242,7 +242,7 @@ export function AdminStatsCards({ stats }: { stats: IStats }) {
       </div>
 
       <Dialog open={open !== null} onOpenChange={(next) => !next && setOpenKey(null)}>
-        <DialogContent className="max-w-md gap-0 overflow-hidden rounded-2xl border-white/10 bg-[#0b0f0e] p-0 text-gray-200">
+        <DialogContent className="max-w-md gap-0 overflow-hidden rounded-2xl border-white/10 bg-white/10 p-0 text-gray-200">
           {open && (
             <>
               <div className="border-b border-white/10 bg-linear-to-b from-emerald-500/8 to-transparent px-6 pb-5 pt-6">

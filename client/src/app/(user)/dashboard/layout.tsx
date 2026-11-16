@@ -9,7 +9,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     <div className="relative min-h-screen overflow-x-clip bg-[#03070a] text-gray-100 selection:bg-emerald-400/30">
       <BackgroundFX />
 
-      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 border-r border-white/10 bg-[#04100c]/90 lg:block">
+      <aside className="fixed inset-y-0 left-0 z-20 hidden w-64 border-r border-white/10 bg-white/10 lg:block">
         <SidebarContent />
       </aside>
 

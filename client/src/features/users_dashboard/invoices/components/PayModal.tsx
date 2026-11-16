@@ -18,6 +18,18 @@ export default function PayModal({ invoice: initialInvoice, onClose, onPaid, run
   const invoice = useInvoiceStatus(initialInvoice);
   const [copied, setCopied] = useState(false);
   const notified = useRef(false);
+  // TODO new add
+  const [copiedAmount, setCopiedAmount] = useState(false);
+
+
+  const copyAmount = async () => {
+  await navigator.clipboard.writeText(invoice.amountBch);
+  setCopiedAmount(true);
+  setTimeout(() => setCopiedAmount(false), 1500);
+};
+
+// const walletLink = `bitcoincash:${invoice.payAddress.replace(/^bitcoincash:/i, "")}?amount=${invoice.amountBch}`;
+//* DONE
 
   useEffect(() => {
     if (invoice.status === "PAID" && !notified.current) {
@@ -70,6 +82,12 @@ export default function PayModal({ invoice: initialInvoice, onClose, onPaid, run
               <p className="text-xs text-gray-400">
                 {invoice.amountSats} sats · ${(invoice.priceUsdCents / 100).toFixed(2)}
               </p>
+
+              {/* TODO new add */}
+              <button type="button" onClick={copyAmount} className="mt-1 text-sm text-orange-400">
+  {copiedAmount ? "Copied!" : "Copy amount"}
+</button>
+{/* ?DONE */}
             </div>
 
             {/*  */}
@@ -92,7 +110,6 @@ export default function PayModal({ invoice: initialInvoice, onClose, onPaid, run
                 {copied ? "Copied!" : "Copy address"}
               </button>
             </div>
-
             <p className="text-sm text-gray-300">
               Waiting for payment... expires in <Countdown expiresAt={invoice.expiresAt} />
             </p>
