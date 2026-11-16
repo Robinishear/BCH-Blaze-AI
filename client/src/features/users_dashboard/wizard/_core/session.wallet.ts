@@ -283,9 +283,7 @@ export const paySession = (args: { payAddress: string; amountSats: bigint; elect
   return job;
 };
 
-/* ------------------------------------------------------------------ */
-/* Fund the quick-pay balance (the ONE wallet approval)                */
-/* ------------------------------------------------------------------ */
+/* Fund the quick-pay balance (the ONE wallet approval)*/
 
 export interface FundArgs {
   manager: WalletManagerLike;
@@ -367,9 +365,7 @@ export const fundSession = async ({ manager, amountSatsPerRun, runs, signal, onS
   }
 };
 
-/* ------------------------------------------------------------------ */
-/* Give the leftover money back to the user's wallet                   */
-/* ------------------------------------------------------------------ */
+/* Give the leftover money back to the user's wallet */
 
 export const withdrawSession = async (electrumUrl?: string) => {
   const session = loadSession();

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import {QuickStep, totalBudgetSats } from "../_core/session.wallet";
 import { MAX_RUNS } from "../_core/wizard.constants";
+import { PRESETS, PROGRESS } from "./constants";
 
 interface Props {
   amountSats: bigint;
@@ -14,15 +15,6 @@ interface Props {
   onCancel: () => void;
 }
 
-const PRESETS = [1, 2, 5, 10];
-
-const PROGRESS: Record<QuickStep, string> = {
-  looking: "Looking up your coins…",
-  confirm: "Approve it in your wallet…",
-  waiting: "Waiting for the network to show your balance…",
-  paying: "Paying this invoice…",
-  sent: "Done ✓",
-};
 
 const clampRuns = (value: number) => Math.min(MAX_RUNS, Math.max(1, Math.floor(value) || 1));
 const formatSats = (sats: bigint) => Number(sats).toLocaleString("en-US");

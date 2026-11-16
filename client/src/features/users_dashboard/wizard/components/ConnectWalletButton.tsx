@@ -5,7 +5,6 @@ import { WizardConnectQRDialog } from "@wizardconnect/react";
 import { useWallet } from "./WalletProvider";
 import { SLOW_AFTER_MS } from "../_core/wizard.constants";
 
-
 export default function ConnectWalletButton() {
   const wallet = useWallet();
   const [slow, setSlow] = useState(false);
