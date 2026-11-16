@@ -1,20 +1,14 @@
-/* =========================================================
-   WalletFlow — all motion is transform / opacity / dashoffset
-   (compositor-friendly). The SMIL timeline is paused from JS
-   through the same gate, so both clocks always stay in sync.
-   ========================================================= */
-
 .wf-frame { contain: layout paint; }
 .wf-svg text { text-rendering: geometricPrecision; }
 
-/* ---------- section entrance (added once when scrolled into view) ---------- */
+/*  section entrance (added once when scrolled into view)  */
 .wf-sec .wf-reveal { opacity: 0; transform: translate3d(0, 18px, 0); }
 .wf-sec.wf-visible .wf-reveal {
   animation: wf-in .85s cubic-bezier(.2,.8,.2,1) forwards;
   animation-delay: var(--d, 0ms);
 }
 
-/* ---------- headline shimmer ---------- */
+/*  headline shimmer  */
 .wf-shimmer {
   background: linear-gradient(100deg, #6ee7b7 15%, #a7f3d0 35%, #67e8f9 50%, #a7f3d0 65%, #6ee7b7 85%);
   background-size: 250% 100%;
@@ -22,7 +16,7 @@
   animation: wf-shimmer 5s linear infinite;
 }
 
-/* ---------- wallet chips ---------- */
+/*  wallet chips  */
 .wf-chip {
   --c: #34d399;
   display: inline-flex; align-items: center; gap: .5rem;
@@ -42,7 +36,7 @@
   box-shadow: 0 10px 30px -14px var(--c);
 }
 
-/* ---------- playback controls ---------- */
+/*  playback controls  */
 .wf-ctrl {
   display: inline-flex; align-items: center; gap: .4rem;
   padding: .4rem .8rem; border-radius: .65rem;
@@ -55,7 +49,7 @@
   transform: translateY(-1px); box-shadow: 0 8px 24px -14px rgba(52,211,153,.7);
 }
 
-/* ---------- canvas ambience ---------- */
+/*  canvas ambience  */
 .wf-grid-move { animation: wf-grid 16s linear infinite; }
 
 .wf-dust {
@@ -63,7 +57,7 @@
   animation: wf-dust var(--d, 10s) ease-in-out var(--dl, 0s) infinite;
 }
 
-/* ---------- connectors ---------- */
+/*  connectors  */
 .wf-flow {
   stroke-dasharray: 3 11;
   opacity: .7;
@@ -76,7 +70,7 @@
   animation: wf-ping 2.2s ease-out infinite;
 }
 
-/* ---------- panels ---------- */
+/*  panels  */
 .wf-corner { opacity: .55; animation: wf-corner 3.4s ease-in-out infinite; }
 
 .wf-beam { transform-box: fill-box; animation: wf-beam 4.5s ease-in-out infinite; }
@@ -84,7 +78,7 @@
 .wf-scan { animation: wf-scan 5.6s ease-in-out infinite; }
 .wf-scan-alt { animation-delay: -2.8s; }
 
-/* ---------- wallet cards: hover / focus ---------- */
+/*  wallet cards: hover / focus  */
 .wf-card { outline: none; cursor: pointer; transition: opacity .35s ease; }
 .wf-hl { opacity: 0; transition: opacity .3s ease; }
 
@@ -113,10 +107,10 @@
 .wf-svg[data-active="3"] .wf-conn-3 .wf-flow,
 .wf-svg[data-active="4"] .wf-conn-4 .wf-flow { opacity: 1; animation-duration: .7s; }
 
-/* ---------- single gate: pause every CSS animation together with SMIL ---------- */
+/*  single gate: pause every CSS animation together with SMIL  */
 .wf-svg.wf-paused * { animation-play-state: paused !important; }
 
-/* ---------- keyframes ---------- */
+/*  keyframes  */
 @keyframes wf-in { to { opacity: 1; transform: none; } }
 @keyframes wf-shimmer { to { background-position: -250% 0; } }
 @keyframes wf-grid { to { transform: translate(28px, 28px); } }
@@ -143,7 +137,7 @@
   100% { opacity: 0; transform: translate3d(var(--dx, 10px), -22px, 0); }
 }
 
-/* ---------- reduced motion ---------- */
+/*  reduced motion  */
 @media (prefers-reduced-motion: reduce) {
   .wf-grid-move, .wf-dust, .wf-flow, .wf-ping, .wf-corner,
   .wf-beam, .wf-scan, .wf-shimmer { animation: none !important; }

@@ -5,7 +5,7 @@ import { cn } from "@/_core/utils/utils";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
-const SITE_NAME = "BCH Blaze";
+const SITE_NAME = "BCH BLAZE AI";
 const DESCRIPTION = "Pay-per-request AI gateway powered by Bitcoin Cash.";
 const FALLBACK_URL = "http://localhost:3000";
 

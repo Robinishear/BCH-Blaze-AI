@@ -1,50 +1,67 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/_core/utils/utils';
 
-// const BRAND = 'BCH BLAZE';
+import './css/Navbar.css';
+
 const LINKS = [
   { href: '/', label: 'Home' },
   // { href: '/docs', label: 'Docs' },
   { href: '/blaze', label: 'BLAZE 2026' },
 ];
 
-// function LogoMark() {
-//   return (
-//     <svg width="28" height="28" viewBox="0 0 32 32" fill="none" aria-hidden>
-//       <defs>
-//         <linearGradient id="lg" x1="0" y1="0" x2="32" y2="32">
-//           <stop stopColor="#34d399" />
-//           <stop offset="1" stopColor="#0ac18e" />
-//         </linearGradient>
-//       </defs>
-//       <rect width="32" height="32" rx="9" fill="url(#lg)" />
-//       <path d="M18 5 9 18h6l-1 9 9-13h-6l1-9Z" fill="#03070a" />
-//     </svg>
-//   );
-// }
+const isActive = (href: string, pathname: string) =>
+  href === '/' ? pathname === '/' : pathname === href || pathname.startsWith(`${href}/`);
 
 function MenuIcon({ open }: { open: boolean }) {
   const bar = 'absolute left-0 h-0.5 w-5 rounded bg-current transition-all duration-300';
   return (
     <span className="relative block h-3.5 w-5">
       <span className={cn(bar, open ? 'top-1.5 rotate-45' : 'top-0')} />
-      <span className={cn(bar, 'top-1.5', open && 'opacity-0')} />
+      <span className={cn(bar, 'top-1.5', open && 'opacity-0 -translate-x-2')} />
       <span className={cn(bar, open ? 'top-1.5 -rotate-45' : 'top-3')} />
     </span>
   );
 }
 
-function NavLink({ href, label, active, className }: { href: string; label: string; active: boolean; className?: string }) {
+function NavLink({
+  href,
+  label,
+  active,
+  variant = 'desktop',
+  index = 0,
+  onEnter,
+  className,
+}: {
+  href: string;
+  label: string;
+  active: boolean;
+  variant?: 'desktop' | 'mobile';
+  index?: number;
+  onEnter?: (el: HTMLElement) => void;
+  className?: string;
+}) {
   return (
     <Link
       href={href}
+      data-active={active}
+      aria-current={active ? 'page' : undefined}
+      style={{ '--i': index } as React.CSSProperties}
+      onPointerEnter={(e) => onEnter?.(e.currentTarget)}
+      onFocus={(e) => onEnter?.(e.currentTarget)}
       className={cn(
-        'rounded-lg px-3.5 py-2 text-sm font-medium transition-colors',
-        active ? 'bg-emerald-500/10 text-emerald-300' : 'text-gray-400 hover:bg-white/5 hover:text-white',
+        'nv-link relative rounded-lg px-3.5 py-2 text-sm font-medium',
+        variant === 'mobile' && 'nv-item',
+        active
+          ? variant === 'mobile'
+            ? 'bg-emerald-500/10 text-emerald-300'
+            : 'text-emerald-300'
+          : variant === 'mobile'
+            ? 'text-gray-400 hover:bg-white/5 hover:text-white'
+            : 'text-gray-400 hover:text-white',
         className,
       )}
     >
@@ -96,12 +113,82 @@ export const Navbar = ({ authButtons }: { authButtons: React.ReactNode }) => {
   const { hidden, scrolled, show } = useScrollState();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const headerRef = useRef<HTMLElement>(null);
+  const linksRef = useRef<HTMLDivElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
+  /* ---------- sliding hover pill (imperative: no re-renders) ---------- */
+  const movePill = useCallback((el: HTMLElement | null) => {
+    const wrap = linksRef.current;
+    if (!wrap) return;
+    if (!el) {
+      wrap.style.setProperty('--o', '0');
+      return;
+    }
+    wrap.style.setProperty('--x', `${el.offsetLeft}px`);
+    wrap.style.setProperty('--w', `${el.offsetWidth}px`);
+    wrap.style.setProperty('--o', '1');
+  }, []);
+
+  const resetPill = useCallback(() => {
+    const active = linksRef.current?.querySelector<HTMLElement>('[data-active="true"]') ?? null;
+    movePill(active);
+  }, [movePill]);
+
+  useEffect(() => {
+    resetPill();
+    window.addEventListener('resize', resetPill);
+    return () => window.removeEventListener('resize', resetPill);
+  }, [pathname, resetPill]);
+
+  /* ---------- reading progress bar (transform only, rAF throttled) ---------- */
+  useEffect(() => {
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const bar = barRef.current;
+      if (!bar) return;
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      bar.style.transform = `scaleX(${p})`;
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [pathname]);
+
+  /* ---------- mobile menu: close on outside click / Escape ---------- */
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const onPointer = (e: PointerEvent) => {
+      if (headerRef.current && !headerRef.current.contains(e.target as Node)) setMobileOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('pointerdown', onPointer);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [mobileOpen]);
+
   return (
     <header
+      ref={headerRef}
       onFocusCapture={show}
       className={cn(
         'sticky top-0 z-50 px-3 pt-3 transition-[transform,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] sm:px-6',
@@ -109,32 +196,47 @@ export const Navbar = ({ authButtons }: { authButtons: React.ReactNode }) => {
       )}
     >
       <nav
+        data-scrolled={scrolled}
+        data-open={mobileOpen}
         className={cn(
-          'mx-auto max-w-7xl rounded-2xl border backdrop-blur-xl transition-all duration-500',
+          'nv-nav nv-enter relative mx-auto max-w-7xl overflow-hidden rounded-2xl border backdrop-blur-xl transition-all duration-500',
           scrolled
-            ? 'border-emerald-500/20 bg-[#05100d]/75 shadow-[0_8px_40px_-12px_rgba(16,185,129,0.35)]'
-            : 'border-white/5 bg-white/2',
+            ? 'border-emerald-500/20 bg-emerald-950 shadow-[0_8px_40px_-12px_rgba(16,185,129,0.35)]'
+            : 'border-white/5 bg-white/10',
         )}
       >
+        {/* edge light (visible once scrolled) */}
+        <span aria-hidden className="nv-topline pointer-events-none absolute inset-x-8 top-0 h-px" />
+
         <div className="flex h-14 items-center justify-between px-4 sm:px-5">
+          {/* ---------- brand ---------- */}
           <Link href="/" className="group flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/8 text-xl font-black text-emerald-300 shadow-[0_0_25px_rgba(16,185,129,0.08)] transition group-hover:border-emerald-300/60">
-            ₿
-          </div>
+            <span className="nv-chip relative flex h-11 w-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-400/8 text-xl font-black text-emerald-300 transition-colors group-hover:border-emerald-300/60">
+              <span className="nv-coin">₿</span>
+            </span>
 
-          <div>
-            <h1 className="text-sm font-black tracking-[0.22em] text-white">
-              BCH <span className="text-emerald-400">BLAZE AI</span>
-            </h1>
-            <p className="mt-1 text-[9px] font-medium tracking-[0.25em] text-emerald-100/35">
-              BLOCKCHAIN ECOSYSTEM
-            </p>
-          </div>
-        </Link>
+            <span className="block">
+              <span className="block text-sm font-black tracking-[0.22em] text-white">
+                BCH <span className="nv-shimmer">BLAZE AI</span>
+              </span>
+              <span className="mt-1 block text-[9px] font-medium tracking-[0.25em] text-emerald-100/35">
+                BLOCKCHAIN ECOSYSTEM
+              </span>
+            </span>
+          </Link>
 
-          <div className="hidden items-center gap-1 md:flex">
+          {/* ---------- desktop links ---------- */}
+          <div
+            ref={linksRef}
+            onPointerLeave={resetPill}
+            onBlur={(e) => {
+              if (!e.currentTarget.contains(e.relatedTarget as Node | null)) resetPill();
+            }}
+            className="nv-links relative hidden items-center gap-1 md:flex"
+          >
+            <span aria-hidden className="nv-pill pointer-events-none absolute inset-y-0 left-0 rounded-lg" />
             {LINKS.map((l) => (
-              <NavLink key={l.href} {...l} active={l.href === pathname} />
+              <NavLink key={l.href} {...l} active={isActive(l.href, pathname)} onEnter={movePill} />
             ))}
           </div>
 
@@ -151,6 +253,7 @@ export const Navbar = ({ authButtons }: { authButtons: React.ReactNode }) => {
           </button>
         </div>
 
+        {/* ---------- mobile menu ---------- */}
         <div
           className={cn(
             'grid transition-[grid-template-rows] duration-300 ease-out md:hidden',
@@ -159,13 +262,30 @@ export const Navbar = ({ authButtons }: { authButtons: React.ReactNode }) => {
         >
           <div className="overflow-hidden">
             <div className="space-y-1 border-t border-white/5 px-3 pb-4 pt-3">
-              {LINKS.map((l) => (
-                <NavLink key={l.href} {...l} active={l.href === pathname} className="block" />
+              {LINKS.map((l, i) => (
+                <NavLink
+                  key={l.href}
+                  {...l}
+                  active={isActive(l.href, pathname)}
+                  variant="mobile"
+                  index={i}
+                  className="block"
+                />
               ))}
-              <div className="pt-3">{authButtons}</div>
+              <div className="nv-item pt-3" style={{ '--i': LINKS.length } as React.CSSProperties}>
+                {authButtons}
+              </div>
             </div>
           </div>
         </div>
+
+        {/* reading progress */}
+        <span
+          ref={barRef}
+          aria-hidden
+          className="nv-progress pointer-events-none absolute inset-x-0 bottom-0 h-0.5"
+          style={{ transform: 'scaleX(0)' }}
+        />
       </nav>
     </header>
   );

@@ -4,9 +4,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Pause, Play, RotateCcw } from 'lucide-react';
 import { CARD_Y, MONO, Packet, ROWS, Show, Slot, WalletIcon, WALLETS } from './Wallet_fun';
 
-import './WalletFlow.css';
+import './css/WalletFlow.css';
 
-/** Ambient floating dust (static data → no re-render cost, animated purely by CSS transforms). */
 const DUST = [
   { x: 150, y: 120, r: 1.6, dx: 14, d: 9, dl: 0 },
   { x: 330, y: 470, r: 1.2, dx: -10, d: 11, dl: 2 },
