@@ -5,8 +5,8 @@ import {
 } from "../app/modules/tracking/tracking.constants";
 import { TrackJobData } from "../app/modules/tracking/tracking.interface";
 import { processBatch } from "../app/modules/tracking/tracking.processor";
-import { hasRedis, workerConnection } from "../queues/Connection";
-import { closeTrackQueue } from "../queues/track.queue";
+import { hasRedis, workerConnection } from "../queues/tracking.connection";
+import { closeTrackQueue } from "../queues/tracking.queue";
 
 let worker: Worker<TrackJobData> | null = null;
 

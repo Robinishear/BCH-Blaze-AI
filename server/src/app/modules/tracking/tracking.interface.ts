@@ -10,3 +10,10 @@ export interface TrackJobData {
   events: TrackBatchBody["events"];
   receivedAt: number;
 }
+
+export interface IngestInput {
+  body: TrackBatchBody;
+  ip: string;
+  userId: string | null;
+  userAgent: string;
+}

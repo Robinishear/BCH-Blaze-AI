@@ -1,7 +1,7 @@
 import { Queue } from "bullmq";
 import { TRACK_QUEUE_NAME } from "../app/modules/tracking/tracking.constants";
 import { TrackJobData } from "../app/modules/tracking/tracking.interface";
-import { hasRedis, queueConnection } from "./Connection";
+import { hasRedis, queueConnection } from "./tracking.connection";
 
 
 let queue: Queue<TrackJobData> | null = null;

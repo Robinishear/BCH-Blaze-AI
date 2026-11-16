@@ -5,7 +5,7 @@ import { envVars } from "./app/config/env";
 import { prisma } from "./app/lib/prisma";
 import { startInvoiceSweeper, stopInvoiceSweeper } from "./workers/invoiceSweeper";
 import { startPaymentWatcher, stopPaymentWatcher } from "./workers/paymentWatcher";
-import { startTrackWorker, stopTrackWorker } from "./workers/track.worker";
+import { startTrackWorker, stopTrackWorker } from "./workers/tracking.worker";
 
 
 let server: Server | null = null;
