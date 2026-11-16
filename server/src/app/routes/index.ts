@@ -7,6 +7,7 @@ import { UsageRoutes } from "../modules/usage/usage.routes";
 import { envVars } from "../config/env";
 import { InvoiceDevRoutes } from "../modules/invoice/invoice.dev.route";
 import { PublicApiRoutes } from "../modules/public-api/public-api.routes";
+import { TrackingRoutes } from "../modules/tracking/tracking.routes";
 
 
 const router = Router();
@@ -19,6 +20,9 @@ router.use("/invoices", InvoiceRoutes);
 router.use("/usage", UsageRoutes);
 
 router.use("/insight", PublicApiRoutes);
+
+router.use("/track", TrackingRoutes);
+
 
 if (envVars.CHAIN_MODE === "mock" && envVars.NODE_ENV !== "production") {
   router.use("/dev", InvoiceDevRoutes);

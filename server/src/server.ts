@@ -5,6 +5,8 @@ import { envVars } from "./app/config/env";
 import { prisma } from "./app/lib/prisma";
 import { startInvoiceSweeper, stopInvoiceSweeper } from "./workers/invoiceSweeper";
 import { startPaymentWatcher, stopPaymentWatcher } from "./workers/paymentWatcher";
+import { startTrackWorker, stopTrackWorker } from "./workers/track.worker";
+
 
 let server: Server | null = null;
 let shuttingDown = false;
@@ -17,6 +19,8 @@ const bootstrap = async () => {
       console.log(`Server is running on http://localhost:${envVars.PORT}`);
       startInvoiceSweeper();
       startPaymentWatcher();
+      startTrackWorker();
+
 
     });
   } catch (error) {
@@ -40,8 +44,12 @@ const shutdown = (reason: string, exitCode: number) => {
     process.exit(1);
   }, SHUTDOWN_TIMEOUT_MS).unref();
 
-  const finish = () =>
-    prisma.$disconnect().finally(() => process.exit(exitCode));
+  // const finish = () =>
+  //   prisma.$disconnect().finally(() => process.exit(exitCode));
+   const finish = () =>
+    Promise.allSettled([stopTrackWorker(), prisma.$disconnect()]).finally(() =>
+      process.exit(exitCode),
+    );
 
   if (!server) return void finish();
   server.close(() => {

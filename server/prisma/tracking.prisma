@@ -1,0 +1,50 @@
+model TrackSession {
+  id              String   @id @default(cuid())
+  visitorId       String
+  clientSessionId String
+  userId          String?
+
+  ip              String
+  country         String?
+  region          String?
+  city            String?
+  timezone        String?
+
+  device          String?
+  browser         String?
+  os              String?
+  userAgent       String?
+  screen          String?
+  language        String?
+
+  entryPath       String
+  referrer        String?
+  isBot            Boolean  @default(false)
+
+  startedAt       DateTime @default(now())
+  lastSeenAt      DateTime @default(now())
+
+  eventCount      Int      @default(0)
+  pageViewCount   Int      @default(0)
+  devtoolsCount   Int      @default(0)
+
+  events          TrackEvent[]
+
+  @@unique([visitorId, clientSessionId])
+  @@index([userId, startedAt])
+  @@index([visitorId])
+  @@index([lastSeenAt])
+}
+
+model TrackEvent {
+  id        BigInt   @id @default(autoincrement())
+  sessionId String
+  session   TrackSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  type      String
+  path      String
+  props     Json?
+  at        DateTime
+
+  @@index([sessionId, at])
+  @@index([type, at])
+}

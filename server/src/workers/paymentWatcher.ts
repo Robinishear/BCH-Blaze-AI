@@ -5,7 +5,6 @@ import { InvoiceService } from "../app/modules/invoice/invoice.service";
 import { onInvoiceCreated } from "./signal";
 import { ACTIVE_INTERVAL_MS, BATCH_SIZE, IDLE_INTERVAL_MS } from "./workers.constants";
 
-
 let timer: NodeJS.Timeout | null = null;
 let unsubscribe: (() => void) | null = null;
 let running = false;

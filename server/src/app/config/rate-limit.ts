@@ -78,3 +78,13 @@ export const forgotPasswordLimiter = rateLimit({
   legacyHeaders: false,
   message: { success: false, message: "Too many requests. Please try again later." },
 });
+
+
+//* tracking limit
+export const trackLimiter = rateLimit({
+  windowMs: 60_000,
+  limit: 120,
+  standardHeaders: "draft-7",
+  legacyHeaders: false,
+  message: { success: false, message: "Too many requests." },
+});
