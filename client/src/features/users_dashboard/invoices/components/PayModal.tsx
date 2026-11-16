@@ -13,7 +13,6 @@ interface Props {
   onPaid: (invoiceId: string) => void;
   running?: boolean;
 }
-
 export default function PayModal({ invoice: initialInvoice, onClose, onPaid, running }: Props) {
   const invoice = useInvoiceStatus(initialInvoice);
   const [copied, setCopied] = useState(false);
@@ -27,8 +26,6 @@ export default function PayModal({ invoice: initialInvoice, onClose, onPaid, run
   setCopiedAmount(true);
   setTimeout(() => setCopiedAmount(false), 1500);
 };
-
-// const walletLink = `bitcoincash:${invoice.payAddress.replace(/^bitcoincash:/i, "")}?amount=${invoice.amountBch}`;
 //* DONE
 
   useEffect(() => {

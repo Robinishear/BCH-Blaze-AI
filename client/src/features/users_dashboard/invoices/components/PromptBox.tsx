@@ -1,5 +1,6 @@
 import { Props } from "../_core/invoices.interface";
 
+//const MAX = 800;
 const MAX = 500;
 
 export default function PromptBox({ value, onChange, disabled }: Props) {
