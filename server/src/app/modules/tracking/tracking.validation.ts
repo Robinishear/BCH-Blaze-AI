@@ -35,3 +35,54 @@ export const trackBatchSchema = z.object({
 });
 
 export type TrackBatchBody = z.infer<typeof trackBatchSchema>;
+
+
+//# TODO get  
+const bool = z.enum(["true", "false"]).transform((v) => v === "true");
+
+const pagination = {
+  page: z.coerce.number().int().min(1).default(1),
+  limit: z.coerce.number().int().min(1).max(100).default(20),
+};
+
+export const onlineQuery = z.object({
+  minutes: z.coerce.number().int().min(1).max(60).default(5),
+  includeBots: bool.default(false),
+});
+
+export const sessionsQuery = z.object({
+  ...pagination,
+  type: z.enum(["all", "user", "anonymous"]).default("all"),
+  country: z.string().max(2).optional(),
+  ip: z.string().max(64).optional(),
+  userId: z.string().max(64).optional(),
+  visitorId: z.string().max(64).optional(),
+  device: z.string().max(20).optional(),
+  devtools: bool.optional(),
+  isBot: bool.optional(),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
+});
+
+export const paginationQuery = z.object(pagination);
+
+export const eventsQuery = z.object({
+  ...pagination,
+  type: z.enum(EVENT_TYPES).optional(),
+  path: z.string().max(300).optional(),
+  sessionId: z.string().max(64).optional(),
+  userId: z.string().max(64).optional(),
+  visitorId: z.string().max(64).optional(),
+  ip: z.string().max(64).optional(),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
+});
+
+export const statsQuery = z.object({
+  days: z.coerce.number().int().min(1).max(90).default(7),
+  includeBots: bool.default(false),
+});
+
+export const pagesQuery = statsQuery.extend({
+  limit: z.coerce.number().int().min(1).max(50).default(20),
+});

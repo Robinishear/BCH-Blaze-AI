@@ -7,7 +7,6 @@ import { startInvoiceSweeper, stopInvoiceSweeper } from "./workers/invoiceSweepe
 import { startPaymentWatcher, stopPaymentWatcher } from "./workers/paymentWatcher";
 import { startTrackWorker, stopTrackWorker } from "./workers/tracking.worker";
 
-
 let server: Server | null = null;
 let shuttingDown = false;
 

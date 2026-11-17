@@ -1,3 +1,7 @@
+import z from "zod";
+import { eventsQuery, sessionsQuery } from "./tracking.validation";
+import { envVars } from "../../config/env";
+
 export const EVENT_TYPES = [
   "page_view",
   "click",
@@ -24,3 +28,38 @@ export const BOT_UA_REGEX =
 
 export const TRACK_QUEUE_NAME = "track-events";
 export const TRACK_WORKER_CONCURRENCY = 3;
+
+
+
+export const MAX_TIMELINE_EVENTS = 2000;
+export const DAY_MS = 24 * 60 * 60_000;
+export type SessionsQuery = z.infer<typeof sessionsQuery>;
+export type EventsQuery = z.infer<typeof eventsQuery>;
+
+
+export const hasRedis = () => {
+  const url = envVars.REDIS_URL?.trim();
+  if (!url) return false;
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "redis:" || protocol === "rediss:";
+  } catch {
+    return false;
+  }
+};
+
+const base = () => {
+  const u = new URL(envVars.REDIS_URL);
+  return {
+    host: u.hostname,
+    port: Number(u.port || 6379),
+    username: u.username ? decodeURIComponent(u.username) : undefined,
+    password: u.password ? decodeURIComponent(u.password) : undefined,
+    db: u.pathname.length > 1 ? Number(u.pathname.slice(1)) : undefined,
+    ...(u.protocol === "rediss:" ? { tls: {} } : {}),
+  };
+};
+
+export const queueConnection = () => ({ ...base(), enableOfflineQueue: false });
+
+export const workerConnection = () => ({ ...base(), maxRetriesPerRequest: null });

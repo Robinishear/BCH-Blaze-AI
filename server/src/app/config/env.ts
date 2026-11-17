@@ -19,7 +19,6 @@ interface EnvConfig {
   REFRESH_TOKEN_EXPIRES_IN: string;
   CHAIN_MODE: string;
   
-
   AUTH: {
     BETTER_AUTH_SECRET: string;
     BETTER_AUTH_URL: string;
@@ -70,7 +69,6 @@ const loadEnvVariables = (): EnvConfig => {
     "REFRESH_TOKEN_SECRET",
     "ACCESS_TOKEN_EXPIRES_IN",
     "REFRESH_TOKEN_EXPIRES_IN",
-
 
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",

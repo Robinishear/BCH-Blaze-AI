@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { UserStatus } from "../../generated/prisma";
-import { prisma } from "../lib/prisma";
+import { prisma } from "./prisma";
 import { CookieUtils } from "../utils/cookie";
 
 export const optionalAuth = async (

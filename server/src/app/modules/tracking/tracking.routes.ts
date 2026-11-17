@@ -5,11 +5,12 @@ import { validateRequest } from "../../middleware/validateRequest";
 import { TrackingController } from "./tracking.controller";
 import { trackBatchSchema } from "./tracking.validation";
 import { trackLimiter } from "../../config/rate-limit";
-import { optionalAuth } from "../../lib/optionalAuth";
+import { optionalAuth } from "../../lib/tracking-auth";
+import { checkAuth } from "../../middleware/checkAuth";
+import { Role } from "../../../generated/prisma";
 
 const router = Router();
 
-// navigator.sendBeacon sends text/plain: it is parsed as JSON here (so no CORS preflight is needed either)
 const parseBeaconBody = (req: Request, _res: Response, next: NextFunction) => {
   if (typeof req.body === "string") {
     try {
@@ -30,5 +31,15 @@ router.post(
   validateRequest(trackBatchSchema),
   TrackingController.ingest,
 );
+
+router.get("/online",checkAuth(Role.ADMIN), TrackingController.online);
+router.get("/sessions", checkAuth(Role.ADMIN), TrackingController.sessions);
+router.get("/sessions/:id", checkAuth(Role.ADMIN),TrackingController.sessionTimeline);
+router.get("/users/:userId",checkAuth(Role.ADMIN), TrackingController.userActivity);
+router.get("/visitors/:visitorId", checkAuth(Role.ADMIN),TrackingController.visitorActivity);
+router.get("/ips/:ip", checkAuth(Role.ADMIN),TrackingController.ipActivity);
+router.get("/events", checkAuth(Role.ADMIN),TrackingController.events);
+router.get("/stats/overview", checkAuth(Role.ADMIN),TrackingController.overview);
+router.get("/stats/pages", checkAuth(Role.ADMIN),TrackingController.pageStats);
 
 export const TrackingRoutes = router;

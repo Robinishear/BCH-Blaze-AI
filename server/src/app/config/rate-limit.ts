@@ -39,9 +39,7 @@ export const limiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: tooMany,
-
 });
-
 
 export const publicCreateLimiter = rateLimit({
   windowMs: 10 * 60_000,
@@ -61,7 +59,6 @@ export const publicPollLimiter = rateLimit({
   message: tooMany,
 });
 
-
 export const forgotPasswordCooldown = rateLimit({
   windowMs: 60 * 1000,
   limit: 1,
@@ -78,7 +75,6 @@ export const forgotPasswordLimiter = rateLimit({
   legacyHeaders: false,
   message: { success: false, message: "Too many requests. Please try again later." },
 });
-
 
 //* tracking limit
 export const trackLimiter = rateLimit({
