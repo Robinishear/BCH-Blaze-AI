@@ -12,6 +12,11 @@ let shuttingDown = false;
 
 const SHUTDOWN_TIMEOUT_MS = 100_000;
 
+// Allow BigInt in JSON responses (Prisma BigInt ids)
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 const bootstrap = async () => {
   try {
     server = app.listen(envVars.PORT, () => {
@@ -26,6 +31,7 @@ const bootstrap = async () => {
     console.error("Failed to start server:", error);
   }
 };
+
 
 const shutdown = (reason: string, exitCode: number) => {
   if (shuttingDown) {
