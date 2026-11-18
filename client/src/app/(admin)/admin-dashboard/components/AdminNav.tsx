@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FileText, LayoutDashboard, Users, type LucideIcon } from "lucide-react";
+import { Activity, FileText, LayoutDashboard, Users, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/_core/utils/utils";
 
@@ -12,7 +12,7 @@ const NAV: NavItem[] = [
   { href: "/admin-dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   // { href: "/admin-dashboard/users", label: "Users", icon: Users },
   { href: "/admin-dashboard/invoices", label: "Invoices", icon: FileText },
-    { href: "/admin-dashboard/activity", label: "activity", icon: Users },
+    { href: "/admin-dashboard/activity", label: "activity", icon: Activity },
 
 ];
 

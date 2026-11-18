@@ -43,10 +43,10 @@ export const getSessions = async (filters: SessionFilters): Promise<Paged<Sessio
 export const getSessionTimeline = async (id: string) =>
   (await get<TimelineData>(`/sessions/${encodeURIComponent(id)}`)).data;
 
-export const getUserActivity = async (userId: string, params?: { page?: string; limit?: string }) => {
-  const r = await get<UserActivity>(`/users/${encodeURIComponent(userId)}`, params);
-  return { ...r.data, meta: r.meta ?? EMPTY_META };
-};
+// export const getUserActivity = async (userId: string, params?: { page?: string; limit?: string }) => {
+//   const r = await get<UserActivity>(`/users/${encodeURIComponent(userId)}`, params);
+//   return { ...r.data, meta: r.meta ?? EMPTY_META };
+// };
 
 export const getVisitorActivity = async (visitorId: string, params?: { page?: string; limit?: string }) => {
   const r = await get<VisitorActivity>(`/visitors/${encodeURIComponent(visitorId)}`, params);
@@ -68,3 +68,9 @@ export const getOverview = async (params?: { days?: number; includeBots?: boolea
 
 export const getPageStats = async (params?: { days?: number; limit?: number; includeBots?: boolean }) =>
   (await get<PageStatsData>("/stats/pages", params)).data;
+
+export const getUserActivity = async (userId: string, params?: { page?: string; limit?: string }) => {
+  if (!userId || userId === "undefined") throw new Error("getUserActivity: userId missing");
+  const r = await get<UserActivity>(`/users/${encodeURIComponent(userId)}`, params);
+  return { ...r.data, meta: r.meta ?? EMPTY_META };
+};
