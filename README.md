@@ -179,6 +179,8 @@ Open `http://localhost:3000`. The client uses `NEXT_PUBLIC_API_BASE_URL` for bro
 
 The root `render.yaml` defines two Docker web services: `bch-blaze-server` and `bch-blaze-client`. It does not create PostgreSQL or Redis; set the URLs of your existing services in Render. The Blueprint uses Free web services, which can sleep when idle and have a cold start.
 
+For manual Docker image build/run commands, see [DOCKER_DEPLOYMENT.md](./DOCKER_DEPLOYMENT.md).
+
 To deploy:
 
 1. Push the repository to GitHub and create a Render Blueprint from the repository.
