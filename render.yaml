@@ -1,0 +1,81 @@
+services:
+  - type: web
+    name: bch-blaze-server
+    runtime: docker
+    plan: free
+    dockerfilePath: ./server/Dockerfile.prod
+    dockerContext: ./server
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: FRONTEND_ORIGIN
+        sync: false
+      - key: CHAIN_MODE
+        value: real
+      - key: BCH_NETWORK
+        value: mainnet
+      - key: BCH_XPUB
+        sync: false
+      - key: CHAIN_API_URL
+        sync: false
+      - key: PRICE_API_URL
+        sync: false
+      - key: BCH_CHECK_ADDRESS
+        sync: false
+      - key: BETTER_AUTH_URL
+        sync: false
+      - key: BETTER_AUTH_SECRET
+        generateValue: true
+      - key: ACCESS_TOKEN_SECRET
+        generateValue: true
+      - key: REFRESH_TOKEN_SECRET
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRES_IN
+        value: 1d
+      - key: REFRESH_TOKEN_EXPIRES_IN
+        value: 7d
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GITHUB_CLIENT_ID
+        sync: false
+      - key: GITHUB_CLIENT_SECRET
+        sync: false
+      - key: AI_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash-lite
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        sync: false
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+
+  - type: web
+    name: bch-blaze-client
+    runtime: docker
+    plan: free
+    dockerfilePath: ./client/Dockerfile.prod
+    dockerContext: ./client
+    envVars:
+      - key: NEXT_PUBLIC_API_BASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_ELECTRUM_WS_URL
+        value: wss://bch.imaginary.cash:50004
+      - key: BASE_URL
+        sync: false
+      - key: NEXT_PUBLIC_BACKEND_URL
+        sync: false

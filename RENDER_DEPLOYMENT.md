@@ -2,6 +2,21 @@
 
 এই নোটটি Render-এ `client` ও `server`-কে আলাদা Docker web service হিসেবে deploy করার জন্য। এখানে কোনো বাস্তব secret বা account value রাখা হয়নি।
 
+## Render Blueprint
+
+Root-এর `render.yaml` একই monorepo থেকে `bch-blaze-server` ও `bch-blaze-client` নামে দুটি Free Docker web service তৈরি করে। এটি PostgreSQL বা Redis তৈরি করে না; বিদ্যমান external service-এর URL Render dashboard-এ Backend-এর `DATABASE_URL` ও `REDIS_URL` হিসেবে দিতে হবে। Free service idle থাকলে sleep/cold-start হতে পারে।
+
+Blueprint-এ `sync: false` থাকা variable-গুলো Render dashboard-এ পূরণ করতে হবে। `BETTER_AUTH_SECRET`, `ACCESS_TOKEN_SECRET` ও `REFRESH_TOKEN_SECRET` Blueprint নিজে generate করে।
+
+Deploy-এর পর পাওয়া backend/frontend URL অনুযায়ী:
+
+- Frontend build arg `NEXT_PUBLIC_API_BASE_URL`: `https://<backend-public-url>/api/v1`
+- Frontend runtime `BASE_URL`: `https://<backend-public-url>/api/v1` (অথবা Render-এর backend internal URL + `/api/v1`)
+- Backend `FRONTEND_ORIGIN`: `https://<frontend-public-url>`
+- Backend `BETTER_AUTH_URL`: `https://<backend-public-url>` — `/api/v1` suffix ছাড়া
+
+Render frontend URL-টাই visitors-দের share করবে; backend URL API-ებისთვის.
+
 ## 1. Service setup
 
 | Render service | Build context / root directory | Dockerfile |

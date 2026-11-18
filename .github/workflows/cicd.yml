@@ -10,32 +10,57 @@ permissions:
   contents: read
 
 jobs:
-  quality:
+  server:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+
       - uses: pnpm/action-setup@v4
         with:
-          version: 10.20.0  
+          version: 12.11.2
 
-      - name: Server
+      - name: Install server dependencies
+        working-directory: ./server
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate Prisma client
         working-directory: ./server
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres?schema=public
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm lint
-          pnpm generate
-          pnpm build
+          DATABASE_URL: postgresql://build:build@localhost:5432/build
+        run: pnpm generate
 
-      - name: Client
+      - name: Build server
+        working-directory: ./server
+        run: pnpm build
+
+  client:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.20.0
+
+      - name: Install client dependencies
+        working-directory: ./client
+        run: pnpm install --frozen-lockfile
+
+      - name: Type-check client
+        working-directory: ./client
+        run: pnpm exec tsc --noEmit
+
+      - name: Build client
         working-directory: ./client
         env:
-          NEXT_PUBLIC_API_URL: https://example.com
-        run: |
-          pnpm install --frozen-lockfile
-          pnpm lint
-          pnpm exec next build
+          NEXT_PUBLIC_API_BASE_URL: https://api.example.invalid/api/v1
+          NEXT_PUBLIC_ELECTRUM_WS_URL: wss://bch.imaginary.cash:50004
+        run: pnpm exec next build
