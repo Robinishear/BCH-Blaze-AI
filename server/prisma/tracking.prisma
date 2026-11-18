@@ -34,6 +34,9 @@ model TrackSession {
   @@index([userId, startedAt])
   @@index([visitorId])
   @@index([lastSeenAt])
+
+  @@map("track_session")
+
 }
 
 model TrackEvent {
@@ -47,4 +50,7 @@ model TrackEvent {
 
   @@index([sessionId, at])
   @@index([type, at])
+
+  @@map("track_event")
+
 }
