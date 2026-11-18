@@ -1,0 +1,14 @@
+.wrap { overflow-x: auto; border: 1px solid color-mix(in srgb, currentColor 14%, transparent); border-radius: 12px; }
+.table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.table th { text-align: left; padding: 10px 12px; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; opacity: 0.65; white-space: nowrap; background: color-mix(in srgb, currentColor 4%, transparent); }
+.table td { padding: 10px 12px; vertical-align: top; border-top: 1px solid color-mix(in srgb, currentColor 9%, transparent); }
+.table tbody tr:hover { background: color-mix(in srgb, currentColor 4%, transparent); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.link { color: #2563eb; text-decoration: none; }
+.link:hover { text-decoration: underline; }
+@media (prefers-color-scheme: dark) { .link { color: #60a5fa; } }
+.sub { display: block; font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+.detail { max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.pulse { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #22c55e; margin-right: 6px; }

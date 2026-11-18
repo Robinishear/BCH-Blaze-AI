@@ -1,0 +1,20 @@
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.stat { border: 1px solid color-mix(in srgb, currentColor 14%, transparent); border-radius: 12px; padding: 14px 16px; background: color-mix(in srgb, currentColor 3%, transparent); }
+.statLabel { font-size: 12px; opacity: 0.65; text-transform: uppercase; letter-spacing: 0.04em; }
+.statValue { font-size: 26px; font-weight: 700; margin-top: 4px; font-variant-numeric: tabular-nums; }
+.statHint { font-size: 12px; opacity: 0.6; margin-top: 2px; }
+.live { color: #16a34a; }
+.alert { color: #dc2626; }
+.split { display: flex; height: 10px; border-radius: 999px; overflow: hidden; margin: 10px 0 6px; background: color-mix(in srgb, currentColor 10%, transparent); }
+.splitUser { background: #22c55e; }
+.splitAnon { background: #94a3b8; }
+.legend { display: flex; justify-content: space-between; font-size: 12px; opacity: 0.75; }
+.chart { display: flex; align-items: flex-end; gap: 6px; height: 140px; padding-top: 8px; }
+.barCol { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; min-width: 18px; }
+.bar { width: 100%; max-width: 40px; border-radius: 6px 6px 0 0; background: #3b82f6; min-height: 2px; }
+.barValue { font-size: 11px; opacity: 0.75; }
+.barLabel { font-size: 11px; opacity: 0.6; white-space: nowrap; }
+.lists { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; }
+.listItem { display: flex; justify-content: space-between; gap: 8px; }
+.listCount { font-variant-numeric: tabular-nums; opacity: 0.75; }

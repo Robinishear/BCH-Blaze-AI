@@ -4,7 +4,7 @@ export const TRACKING_CONFIG = {
   endpoint: `${API_BASE}/track`,
   enabled: Boolean(API_BASE),
 
-  excludedPathPrefixes: ["/admin"],
+  excludedPathPrefixes: ["/admin-dashboard"],
 
   flushIntervalMs: 5_000,
   maxBatch: 20,
