@@ -3,7 +3,7 @@ import { activityPaths } from "../lib/activity.paths";
 import { countryFlag, describeEvent, formatDateTime, isAlertType, visitorLabel } from "../lib/format";
 import { EventRow } from "../_core/activity.types";
 import Badge, { VisitorBadges } from "./Badge";
-import styles from "../css/tables.module.css";
+import styles from "../css/Tables.module.css";
 import ui from "../css/ui.module.css";
 
 export default function EventsFeed({ events }: { events: EventRow[] }) {

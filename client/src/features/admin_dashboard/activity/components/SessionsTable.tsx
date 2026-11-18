@@ -5,7 +5,7 @@ import {
 } from "../lib/format";
 import { SessionRow } from "../_core/activity.types";
 import Badge, { VisitorBadges } from "./Badge";
-import styles from "../css/tables.module.css";
+import styles from "../css/Tables.module.css";
 import ui from "../css/ui.module.css";
 
 export default function SessionsTable({ sessions }: { sessions: SessionRow[] }) {

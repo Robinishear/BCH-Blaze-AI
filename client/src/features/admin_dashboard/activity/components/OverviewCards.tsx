@@ -1,7 +1,7 @@
 import { formatDay } from "../lib/format";
 import { countryFlag } from "../lib/format";
 import { OverviewData } from "../_core/activity.types";
-import styles from "../css/overview.module.css";
+import styles from "../css/Overview.module.css";
 import ui from "../css/ui.module.css";
 
 const Stat = ({ label, value, hint, tone }: { label: string; value: number; hint?: string; tone?: "live" | "alert" }) => (

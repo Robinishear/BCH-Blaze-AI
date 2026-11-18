@@ -12,6 +12,8 @@ const NAV: NavItem[] = [
   { href: "/admin-dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   // { href: "/admin-dashboard/users", label: "Users", icon: Users },
   { href: "/admin-dashboard/invoices", label: "Invoices", icon: FileText },
+    { href: "/admin-dashboard/activity", label: "activity", icon: Users },
+
 ];
 
 export default function AdminNav() {

@@ -1,5 +1,5 @@
 import { PageStatsData } from "../_core/activity.types";
-import styles from "../css/tables.module.css";
+import styles from "../css/Tables.module.css";
 import ui from "../css/ui.module.css";
 
 export default function PageStats({ data }: { data: PageStatsData }) {

@@ -6,9 +6,9 @@ import {
 } from "../lib/format";
 import { TimelineData } from "../_core/activity.types";
 import Badge, { VisitorBadges } from "./Badge";
-import styles from "../css/timeline.module.css";
+import styles from "../css/Timeline.module.css";
 import ui from "../css/ui.module.css";
-import tables from "../css/tables.module.css";
+import tables from "../css/Tables.module.css";
 
 export default function SessionTimeline({ data }: { data: TimelineData }) {
   const s = data.session;

@@ -3,7 +3,7 @@ import { activityPaths } from "../lib/activity.paths";
 import { countryFlag, deviceLabel, describeEvent, locationLabel, timeAgo, visitorLabel } from "../lib/format";
 import { OnlineData } from "../_core/activity.types";
 import { VisitorBadges } from "./Badge";
-import styles from "../css/tables.module.css";
+import styles from "../css/Tables.module.css";
 import ui from "../css/ui.module.css";
 
 export default function OnlineList({ data }: { data: OnlineData }) {

@@ -2,8 +2,8 @@ import Link from "next/link";
 import { activityPaths } from "../lib/activity.paths";
 import { countryFlag, deviceLabel, formatDateTime, locationLabel, timeAgo } from "../lib/format";
 import { ActivityInfo, DeviceRow, IpRow } from "../_core/activity.types";
-import overview from "../css/overview.module.css";
-import styles from "../css/tables.module.css";
+import overview from "../css/Overview.module.css";
+import styles from "../css/Tables.module.css";
 import ui from "../css/ui.module.css";
 
 const Stat = ({ label, value, alert }: { label: string; value: string | number; alert?: boolean }) => (
