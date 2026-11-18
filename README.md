@@ -1,6 +1,6 @@
 # BCH Blaze AI
 
-Pay for focused AI features one request at a time with Bitcoin Cash (BCH). BCH Blaze creates a payment invoice, verifies the payment on-chain, and then returns an AI-generated result. There are no subscriptions or card payments.
+Pay for focused AI features one request at a time with Bitcoin Cash (BCH). BCH Blaze creates a payment invoice, verifies the payment on-chain, and then returns an AI-generated result. There are no subscriptions or card payments. 
 
 > **Mainnet notice:** The Render Blueprint in this repository configures real BCH mainnet payments. Transactions are irreversible. Do not use it for a public demo until the receiving wallet, pricing, domains, and production environment variables have been verified.
 
