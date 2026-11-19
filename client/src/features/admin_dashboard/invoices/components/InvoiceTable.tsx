@@ -23,6 +23,7 @@ import { AdminInvoice } from "../_core/invoice.interface";
 import {
   amountUsd,
   COLUMNS,
+  COPY_ICON,
   COPY_LABEL,
   copyButton,
   dot,
@@ -33,7 +34,7 @@ import {
   type CopyState,
   type HoverTriggerProps,
 } from "./constants";
-  import { isRealTxid, formatUsd, formatSats, Icon } from "./constants";
+import { isRealTxid, formatUsd, formatSats } from "./constants";
 
 const shorten = (value: string, head = 8, tail = 6) =>
   value.length <= head + tail + 1
@@ -89,6 +90,7 @@ type HoverCopyProps = {
 
 function HoverCopy({ short, full, href, mono = false, tone }: HoverCopyProps) {
   const [status, setStatus] = useState<CopyState>("idle");
+  const Icon = COPY_ICON[status];
 
   const triggerClass = hoverTrigger({ mono, tone, link: !!href });
 

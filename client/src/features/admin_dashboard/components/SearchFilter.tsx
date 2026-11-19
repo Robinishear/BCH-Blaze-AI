@@ -39,7 +39,7 @@ export default function SearchFilter({
       ))}
 
       <input
-        key={searchTerm}
+        key={`search-${searchTerm}`}
         name="searchTerm"
         defaultValue={searchTerm}
         placeholder={placeholder}
@@ -48,15 +48,15 @@ export default function SearchFilter({
 
       {statusOptions && (
         <select
-          key={status}
+          key={`status-${status}`}
           name="status"
           defaultValue={status}
           onChange={(event) => event.currentTarget.form?.requestSubmit()}
           className={inputClass}
         >
-          <option value="">All statuses</option>
-          {statusOptions.map((option) => (
-            <option key={option.value} value={option.value}>
+          <option key="all-statuses" value="">All statuses</option>
+          {statusOptions.map((option, index) => (
+            <option key={`${option.value}-${index}`} value={option.value}>
               {option.label}
             </option>
           ))}

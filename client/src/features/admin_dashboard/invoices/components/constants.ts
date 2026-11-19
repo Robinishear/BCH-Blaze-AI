@@ -2,7 +2,6 @@ import { InvoiceStatus } from "@/features/admin_dashboard/invoices/_core/invoice
 import { cva, type VariantProps } from "class-variance-authority";
 import { Check, Copy, X } from "lucide-react";
 
-
 //* admin-dashboard/invoices/components/InvoiceTable.tsx
 export const EXPLORER_TX_URL = "https://blockchair.com/bitcoin-cash/transaction/";
 
@@ -131,6 +130,3 @@ export const UI = {
 export const isRealTxid = (txid: string) => /^[0-9a-f]{64}$/i.test(txid);
 export const formatUsd = (cents: number) => `$${(cents / 100).toFixed(2)}`;
 export const formatSats = (sats: string) => Number(sats).toLocaleString("en-US");
-
-
-export const Icon = COPY_ICON[status];
