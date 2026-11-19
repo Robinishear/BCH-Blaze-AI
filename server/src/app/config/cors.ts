@@ -1,7 +1,9 @@
 import createCors from "cors";
 import { envVars } from "./env";
 
-const origin = [envVars.FRONTEND_ORIGIN as string];
+const origin = [envVars.FRONTEND_ORIGIN as string,
+"https://bch-blaze-client.onrender.com",
+];
 
 const cors = createCors({
   origin,
