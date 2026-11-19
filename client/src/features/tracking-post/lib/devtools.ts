@@ -19,7 +19,10 @@ export const startDevtoolsWatch = (): (() => void) => {
   const onKey = (e: KeyboardEvent) => {
     if (e.key === "F12") return report("F12");
 
-    const letter = e.code.startsWith("Key") ? e.code.slice(3) : "";
+    const letter =
+      typeof e.code === "string" && e.code.startsWith("Key")
+        ? e.code.slice(3)
+        : "";
     if ((e.ctrlKey && e.shiftKey) && ["I", "J", "C", "K"].includes(letter)) {
       return report(`Ctrl+Shift+${letter}`);
     }

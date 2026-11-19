@@ -1,101 +1,129 @@
 # Render Deployment Environment Map
 
-এই নোটটি Render-এ `client` ও `server`-কে আলাদা Docker web service হিসেবে deploy করার জন্য। এখানে কোনো বাস্তব secret বা account value রাখা হয়নি।
+This document explains how to deploy the `client` and `server` as separate Docker web services on Render. No actual secrets or account-specific values are included.
 
 ## Render Blueprint
 
-Root-এর `render.yaml` একই monorepo থেকে `bch-blaze-server` ও `bch-blaze-client` নামে দুটি Free Docker web service তৈরি করে। এটি PostgreSQL বা Redis তৈরি করে না; বিদ্যমান external service-এর URL Render dashboard-এ Backend-এর `DATABASE_URL` ও `REDIS_URL` হিসেবে দিতে হবে। Free service idle থাকলে sleep/cold-start হতে পারে।
+The root-level `render.yaml` creates two Free Docker web services from the same monorepo:
 
-Blueprint-এ `sync: false` থাকা variable-গুলো Render dashboard-এ পূরণ করতে হবে। `BETTER_AUTH_SECRET`, `ACCESS_TOKEN_SECRET` ও `REFRESH_TOKEN_SECRET` Blueprint নিজে generate করে।
+- `bch-blaze-server`
+- `bch-blaze-client`
 
-Deploy-এর পর পাওয়া backend/frontend URL অনুযায়ী:
+It does not create PostgreSQL or Redis instances. You must provide the URLs of your existing external services in the Backend service's Render dashboard as `DATABASE_URL` and `REDIS_URL`.
 
-- Frontend build arg `NEXT_PUBLIC_API_BASE_URL`: `https://<backend-public-url>/api/v1`
-- Frontend runtime `BASE_URL`: `https://<backend-public-url>/api/v1` (অথবা Render-এর backend internal URL + `/api/v1`)
+**Note:** Free services may spin down when idle, resulting in cold starts.
+
+Variables marked as `sync: false` in the Blueprint must be configured manually in the Render dashboard. The Blueprint automatically generates `BETTER_AUTH_SECRET`, `ACCESS_TOKEN_SECRET`, and `REFRESH_TOKEN_SECRET`.
+
+After deployment, configure the URLs using the public URLs assigned to your Render services:
+
+- Frontend build argument `NEXT_PUBLIC_API_BASE_URL`: `https://<backend-public-url>/api/v1`
+- Frontend runtime `BASE_URL`: `https://<backend-public-url>/api/v1` (or the Render backend internal URL + `/api/v1`)
 - Backend `FRONTEND_ORIGIN`: `https://<frontend-public-url>`
-- Backend `BETTER_AUTH_URL`: `https://<backend-public-url>` — `/api/v1` suffix ছাড়া
+- Backend `BETTER_AUTH_URL`: `https://<backend-public-url>` — without the `/api/v1` suffix.
 
-Render frontend URL-টাই visitors-দের share করবে; backend URL API-ებისთვის.
+Share the Render frontend URL with visitors. The backend URL is used for API requests.
 
-## 1. Service setup
+## 1. Service Setup
 
-| Render service | Build context / root directory | Dockerfile |
-|---|---|---|
-| Frontend | `client/` | `Dockerfile.prod` |
-| Backend | `server/` | `Dockerfile.prod` |
+| Render Service | Build Context / Root Directory | Dockerfile        |
+| -------------- | ------------------------------ | ----------------- |
+| Frontend       | `client/`                      | `Dockerfile.prod` |
+| Backend        | `server/`                      | `Dockerfile.prod` |
 
-Render-এর দেওয়া `PORT` ব্যবহার করতে হবে। Backend config-এ `PORT` আবশ্যক; Render web service-এ এটি স্বয়ংক্রিয়ভাবে সেট হয়। Client-ও `HOSTNAME=0.0.0.0` দিয়ে listen করে।
+Both services must use the `PORT` provided by Render.
 
-## 2. আগে URL-গুলো ঠিক করো
+The backend configuration requires `PORT`, which Render automatically assigns to web services. The client must also listen on `0.0.0.0` using `HOSTNAME=0.0.0.0`.
 
-নিচের placeholder-গুলো Render service তৈরি হওয়ার পরে পাওয়া URL দিয়ে বদলাবে:
+## 2. Configure the URLs First
 
-- `<FRONTEND_PUBLIC_URL>`: যেমন `https://<frontend-service>.onrender.com`
-- `<BACKEND_PUBLIC_URL>`: যেমন `https://<backend-service>.onrender.com`
-- `<BACKEND_INTERNAL_URL>`: Render-এর private network-এ frontend service থেকে backend-এ পৌঁছানোর URL
+Replace the following placeholders with the actual URLs assigned after creating your Render services:
 
-URL-এ `localhost` ব্যবহার কোরো না। Browser-এর জন্য public backend URL, আর frontend server-এর server-side request-এর জন্য internal backend URL ব্যবহার করো।
+- `<FRONTEND_PUBLIC_URL>`: For example, `https://<frontend-service>.onrender.com`
+- `<BACKEND_PUBLIC_URL>`: For example, `https://<backend-service>.onrender.com`
+- `<BACKEND_INTERNAL_URL>`: The private network URL used by the frontend service to communicate with the backend within Render.
 
-## 3. Frontend service variables
+**Do not use `localhost` in production URLs.**
 
-`NEXT_PUBLIC_` variable client bundle-এ build-এর সময় বসে। Render-এ এগুলো Docker build-এর সময় build args হিসেবে দিতে হবে; শুধু runtime environment-এ দিলেই পুরোনো bundle বদলাবে না।
+Use the public backend URL for browser-side requests and the internal backend URL for server-side requests originating from the frontend service.
 
-| Variable | Value / purpose |
-|---|---|
-| `NEXT_PUBLIC_API_BASE_URL` | `https://<backend-service>.onrender.com/api/v1` — Dockerfile-এ আবশ্যক build arg |
-| `NEXT_PUBLIC_ELECTRUM_WS_URL` | `wss://bch.imaginary.cash:50004` — browser থেকে ব্যবহৃত; Dockerfile-এ এই default আছে, চাইলে build arg দিয়ে override করো |
-| `BASE_URL` | `<BACKEND_INTERNAL_URL>/api/v1` — Next.js server থেকে backend call করার runtime variable |
-| `NEXT_PUBLIC_BACKEND_URL` | Socket.IO feature ব্যবহার করলে backend-এর public origin, যেমন `https://<backend-service>.onrender.com`; optional |
+## 3. Frontend Service Environment Variables
 
-`NEXT_PUBLIC_API_BASE_URL`-এ `/api/v1` থাকবে। `BASE_URL`-এও `/api/v1` থাকবে। `NEXT_PUBLIC_BACKEND_URL`-এ শুধু origin থাকবে, API path নয়।
+Variables prefixed with `NEXT_PUBLIC_` are embedded into the client bundle at build time.
 
-## 4. Backend service variables
+Therefore, these values must be provided as Docker build arguments in Render. Setting them only as runtime environment variables will not update an already-built bundle.
 
-নিচের তালিকা `server/src/app/config/env.ts`-এর validation অনুযায়ী। Render dashboard-এ Backend service → Environment সেকশনে সেট করো।
+| Variable                      | Value / Purpose                                                                                                                                             |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_BASE_URL`    | `https://<backend-service>.onrender.com/api/v1` — Required Docker build argument                                                                            |
+| `NEXT_PUBLIC_ELECTRUM_WS_URL` | `wss://bch.imaginary.cash:50004` — Used by the browser. This default is already configured in the Dockerfile, but can be overridden using a build argument. |
+| `BASE_URL`                    | `<BACKEND_INTERNAL_URL>/api/v1` — Runtime variable used by Next.js server-side requests to communicate with the backend.                                    |
+| `NEXT_PUBLIC_BACKEND_URL`     | Backend public origin, for example, `https://<backend-service>.onrender.com`. Optional; required only if the Socket.IO feature is used.                     |
 
-| Variable | Production value / note |
-|---|---|
-| `NODE_ENV` | `production` — Docker image-এ আগেই সেট |
-| `PORT` | Render স্বয়ংক্রিয়ভাবে দেয়; আলাদা করে hard-code কোরো না |
-| `DATABASE_URL` | Render/Postgres connection URL |
-| `FRONTEND_ORIGIN` | `<FRONTEND_PUBLIC_URL>`; শুধু origin, trailing slash নয় |
-| `REDIS_URL` | Optional; না দিলে tracking events সরাসরি database-এ লেখা হয় |
-| `CHAIN_MODE` | `real`; production-এ `mock` চলে না |
-| `BCH_NETWORK` | Real mainnet deployment-এর জন্য `mainnet` |
-| `BCH_XPUB` | Mainnet wallet-এর extended public key; private key নয় |
-| `CHAIN_API_URL` | Blockchain data/API provider URL |
-| `PRICE_API_URL` | BCH price provider URL |
-| `BCH_CHECK_ADDRESS` | Server config-এ required; নির্বাচিত `BCH_XPUB`-এর সঙ্গে মেলে এমন check address |
-| `BETTER_AUTH_URL` | `<BACKEND_PUBLIC_URL>`; `/api/v1` যোগ কোরো না |
-| `BETTER_AUTH_SECRET` | Backend-only strong random secret |
-| `ACCESS_TOKEN_SECRET` | Backend-only strong random secret |
-| `REFRESH_TOKEN_SECRET` | Backend-only strong random secret |
-| `ACCESS_TOKEN_EXPIRES_IN` | বর্তমান local value অনুযায়ী, যেমন `1d` |
-| `REFRESH_TOKEN_EXPIRES_IN` | বর্তমান local value অনুযায়ী, যেমন `7d` |
-| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | OAuth ব্যবহার করলে Google credentials; server validation-এ দুটোই required |
-| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | OAuth ব্যবহার করলে GitHub credentials; server validation-এ দুটোই required |
-| `AI_PROVIDER` | `gemini` |
-| `GEMINI_API_KEY` | Backend-only Gemini API key |
-| `GEMINI_MODEL` | `gemini-3.5-flash-lite` — বর্তমানে কাজ করা model; deploy-এর সময় free-tier access যাচাই করো |
-| `SMTP_HOST` / `SMTP_PORT` | SMTP provider-এর host ও port |
-| `SMTP_USER` / `SMTP_PASS` | Backend-only SMTP credentials |
-| `SMTP_FROM` | Email sender address |
+**Important URL rules:**
 
-`GOOGLE_*`, `GITHUB_*` ও `SMTP_*` server startup validation-এ required, যদিও সংশ্লিষ্ট feature ব্যবহার না করলেও। Placeholder বা ফাঁকা value দিলে backend start নাও হতে পারে।
+- `NEXT_PUBLIC_API_BASE_URL` must include `/api/v1`.
+- `BASE_URL` must also include `/api/v1`.
+- `NEXT_PUBLIC_BACKEND_URL` must contain only the backend origin, without the API path.
 
-## 5. Deploy checklist
+## 4. Backend Service Environment Variables
 
-1. Render-এ Postgres তৈরি করে `DATABASE_URL` Backend service-এ যোগ করো। Redis ব্যবহার করলে `REDIS_URL`-ও যোগ করো।
-2. Backend Docker service deploy করো; `FRONTEND_ORIGIN` ও `BETTER_AUTH_URL`-এ পরবর্তীতে ব্যবহৃত public domain বসাও।
-3. Frontend Docker service-এ `NEXT_PUBLIC_API_BASE_URL` এবং প্রয়োজনে `NEXT_PUBLIC_ELECTRUM_WS_URL` build args হিসেবে সেট করে deploy করো।
-4. Frontend-এর runtime `BASE_URL`-এ backend-এর Render internal URL বসাও।
-5. OAuth provider-এ callback URL-গুলো public backend domain-এর জন্য configure করো।
-6. Deploy-এর পর login, invoice/payment, AI run, email এবং tracking পরীক্ষা করো।
+The following list is based on the validation rules defined in `server/src/app/config/env.ts`.
 
-## 6. Secret ও build সতর্কতা
+Configure these variables under:
 
-- `NEXT_PUBLIC_` দিয়ে শুরু হওয়া value browser-এ দেখা যায়; সেখানে password, API key বা token secret রেখো না।
-- `GEMINI_API_KEY`, database credentials, OAuth secrets, SMTP password, `BETTER_AUTH_SECRET`, `ACCESS_TOKEN_SECRET` ও `REFRESH_TOKEN_SECRET` শুধু Backend service-এ রাখো।
-- `client/.env`-এর `JWT_ACCESS_SECRET` client code-এ ব্যবহৃত হচ্ছে না; এটি Frontend service-এ যোগ কোরো না। Backend-এর token secret variable হলো `ACCESS_TOKEN_SECRET` ও `REFRESH_TOKEN_SECRET`।
-- `.env` file image বা Git-এ কপি না করে Render Environment settings ব্যবহার করো।
-- `NEXT_PUBLIC_` value বদলালে frontend image rebuild/redeploy করো; runtime restart একা যথেষ্ট নয়।
+**Render Dashboard → Backend Service → Environment**
+
+| Variable                                    | Production Value / Notes                                                                             |
+| ------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `NODE_ENV`                                  | `production` — Already configured in the Docker image.                                               |
+| `PORT`                                      | Automatically provided by Render. Do not hard-code it.                                               |
+| `DATABASE_URL`                              | PostgreSQL connection URL.                                                                           |
+| `FRONTEND_ORIGIN`                           | `<FRONTEND_PUBLIC_URL>` — Origin only, without a trailing slash.                                     |
+| `REDIS_URL`                                 | Optional. If omitted, tracking events are written directly to the database.                          |
+| `CHAIN_MODE`                                | `real` — Production does not support `mock` mode.                                                    |
+| `BCH_NETWORK`                               | `mainnet` for a real mainnet deployment.                                                             |
+| `BCH_XPUB`                                  | Extended public key of the mainnet wallet. Never use a private key.                                  |
+| `CHAIN_API_URL`                             | Blockchain data/API provider URL.                                                                    |
+| `PRICE_API_URL`                             | BCH price provider URL.                                                                              |
+| `BCH_CHECK_ADDRESS`                         | Required by the server configuration. Must match an address derived from the selected `BCH_XPUB`.    |
+| `BETTER_AUTH_URL`                           | `<BACKEND_PUBLIC_URL>` — Do not append `/api/v1`.                                                    |
+| `BETTER_AUTH_SECRET`                        | Strong random secret. Backend only.                                                                  |
+| `ACCESS_TOKEN_SECRET`                       | Strong random secret. Backend only.                                                                  |
+| `REFRESH_TOKEN_SECRET`                      | Strong random secret. Backend only.                                                                  |
+| `ACCESS_TOKEN_EXPIRES_IN`                   | Use the current local value, for example, `1d`.                                                      |
+| `REFRESH_TOKEN_EXPIRES_IN`                  | Use the current local value, for example, `7d`.                                                      |
+| `GOOGLE_CLIENT_ID` / `GOOGLE_CLIENT_SECRET` | Google OAuth credentials. Both are required by server validation.                                    |
+| `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` | GitHub OAuth credentials. Both are required by server validation.                                    |
+| `AI_PROVIDER`                               | `gemini`.                                                                                            |
+| `GEMINI_API_KEY`                            | Gemini API key. Backend only.                                                                        |
+| `GEMINI_MODEL`                              | `gemini-3.5-flash-lite` — Currently working model. Verify free-tier availability at deployment time. |
+| `SMTP_HOST` / `SMTP_PORT`                   | SMTP provider hostname and port.                                                                     |
+| `SMTP_USER` / `SMTP_PASS`                   | SMTP credentials. Backend only.                                                                      |
+| `SMTP_FROM`                                 | Email sender address.                                                                                |
+
+**Important:** `GOOGLE_*`, `GITHUB_*`, and `SMTP_*` variables are required by the server startup validation, even if you do not use the corresponding features.
+
+Leaving these values empty or using placeholders may prevent the backend from starting.
+
+## 5. Deployment Checklist
+
+1. Create a PostgreSQL database on Render and add its connection URL as `DATABASE_URL` to the Backend service. If you use Redis, also configure `REDIS_URL`.
+2. Deploy the Backend Docker service. Configure `FRONTEND_ORIGIN` and `BETTER_AUTH_URL` using the appropriate public service URLs.
+3. Configure `NEXT_PUBLIC_API_BASE_URL` and, if necessary, `NEXT_PUBLIC_ELECTRUM_WS_URL` as Docker build arguments for the Frontend service. Then deploy it.
+4. Set the Frontend runtime `BASE_URL` to the backend's Render internal URL, including `/api/v1`.
+5. Configure the OAuth callback URLs in your Google and GitHub OAuth provider settings to use the public backend domain.
+6. After deployment, test the following features:
+   - User login and authentication
+   - Invoice creation and payment processing
+   - AI requests and responses
+   - Email delivery
+   - Tracking functionality
+
+## 6. Secrets and Build Considerations
+
+- Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser. Never store passwords, API keys, or token secrets in them.
+- Keep `GEMINI_API_KEY`, database credentials, OAuth secrets, SMTP passwords, `BETTER_AUTH_SECRET`, `ACCESS_TOKEN_SECRET`, and `REFRESH_TOKEN_SECRET` exclusively in the Backend service.
+- `JWT_ACCESS_SECRET` in `client/.env` is not used by the client code. Do not add it to the Frontend service. The backend token secret variables are `ACCESS_TOKEN_SECRET` and `REFRESH_TOKEN_SECRET`.
+- Do not copy `.env` files into Docker images or commit them to Git. Use Render Environment settings instead.
+- Whenever a `NEXT_PUBLIC_` variable changes, rebuild and redeploy the frontend image. Restarting the service alone is not sufficient.
