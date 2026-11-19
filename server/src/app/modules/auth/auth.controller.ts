@@ -65,7 +65,8 @@ const logout = catchAsync(async (req, res) => {
 const socialSuccess = catchAsync(async (req, res) => {
   const { user, token } = await AuthService.handleSocialSuccess(req.headers);
   setAuthCookies(res, user, token);
-  res.redirect(`${envVars.FRONTEND_ORIGIN}/dashboard`);
+  // res.redirect(`${envVars.FRONTEND_ORIGIN}/dashboard`);
+  res.redirect("https://bch-blaze-client.onrender.com/dashboard");
 });
 
 //* New controller methods for forgot password and reset password */

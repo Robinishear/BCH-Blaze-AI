@@ -8,7 +8,9 @@ const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 const SITE_NAME = "BCH BLAZE AI";
 const DESCRIPTION = "Pay-per-request AI gateway powered by Bitcoin Cash.";
-const FALLBACK_URL = "http://localhost:3000";
+// const FALLBACK_URL = "http://localhost:3000";
+const FALLBACK_URL = "https://bch-blaze-client.onrender.com";
+
 
 const getSiteUrl = () => {
   const raw = process.env.NEXT_PUBLIC_API_BASE_URL?.trim();
