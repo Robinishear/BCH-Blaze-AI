@@ -20,7 +20,12 @@ export const auth = betterAuth({
   baseURL: envVars.AUTH.BETTER_AUTH_URL,
   secret: envVars.AUTH.BETTER_AUTH_SECRET,
   database: prismaAdapter(prisma, { provider: "postgresql" }),
-  trustedOrigins: [envVars.FRONTEND_ORIGIN],
+
+  // trustedOrigins: [envVars.FRONTEND_ORIGIN],
+  trustedOrigins: [
+  envVars.FRONTEND_ORIGIN,
+  "https://bch-blaze-client.onrender.com",
+],
 
   //* old code
   // emailAndPassword: { enabled: true },
