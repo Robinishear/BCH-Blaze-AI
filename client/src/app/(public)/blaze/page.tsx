@@ -246,7 +246,7 @@ export default function BlazePage() {
         }
       `}</style>
 
-      <header className="relative isolate overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] px-5 py-9 sm:px-9 sm:py-12">
+      <header className="relative isolate overflow-hidden rounded-3xl border border-white/10 bg-white/2.5 px-5 py-9 sm:px-9 sm:py-12">
         <div
           aria-hidden
           className="blaze-glow pointer-events-none absolute -right-20 -top-32 -z-10 size-80 rounded-full bg-emerald-500/15 blur-3xl"
@@ -323,7 +323,7 @@ export default function BlazePage() {
           {SYSTEM_OVERVIEW.map(({ title, label, body, Icon, tone }, i) => (
             <article
               key={title}
-              className="blaze-enter group rounded-2xl border border-white/10 bg-white/[0.025] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/25 hover:bg-emerald-400/[0.035]"
+              className="blaze-enter group rounded-2xl border border-white/10 bg-white/2.5 p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/25 hover:bg-emerald-400/[0.035]"
               style={{ animationDelay: `${i * 75}ms` }}
             >
               <div className="flex items-start justify-between gap-3">
