@@ -59,6 +59,14 @@ export const auth = betterAuth({
     },
   },
 
+  //* new add 
+  account: {
+  accountLinking: {
+    enabled: true,
+    trustedProviders: ["google", "github"],
+  },
+},
+
   // // user creation hook to set role based on email
   // databaseHooks: {
   //   user: {
@@ -98,11 +106,19 @@ export const auth = betterAuth({
     cookieCache: { enabled: true, maxAge: 60 * 60 * 24 },
   },
 
+  // advanced: {
+  //   useSecureCookies: isProd,
+  //   cookies: {
+  //     state: { attributes: cookieAttributes },
+  //     sessionToken: { attributes: cookieAttributes },
+  //   },
+  // },
+
   advanced: {
-    useSecureCookies: isProd,
-    cookies: {
-      state: { attributes: cookieAttributes },
-      sessionToken: { attributes: cookieAttributes },
-    },
+  useSecureCookies: isProd,
+  defaultCookieAttributes: cookieAttributes,
+  ipAddress: {
+    ipAddressHeaders: ["x-forwarded-for"],
   },
+},
 });
