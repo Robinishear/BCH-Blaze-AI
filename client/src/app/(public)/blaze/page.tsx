@@ -1,12 +1,24 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ArrowUpRight, KeyRound, LifeBuoy, Terminal } from "lucide-react";
+import {
+  Activity,
+  ArrowUpRight,
+  Bot,
+  Database,
+  KeyRound,
+  LifeBuoy,
+  Network,
+  Server,
+  ShieldCheck,
+  Terminal,
+  Wallet,
+} from "lucide-react";
 import SystemFlow from "@/features/Blaze/components/Systemflow";
 
 export const metadata = {
-  title: "How it works · BCH BLAZE 2026",
+  title: "How BCH Blaze Works",
   description:
-    "How BCH Blaze turns a Bitcoin Cash payment into an AI answer: sign in, connect a wallet, pay, and get the result.",
+    "Explore the complete BCH Blaze system: accounts, invoices, Bitcoin Cash payments, AI execution, usage history, and the public agent API.",
 };
 
 const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -124,6 +136,51 @@ const QUICK_TEST = [
   "Approve the payment in your wallet. The answer shows up in a few seconds.",
 ];
 
+const SYSTEM_OVERVIEW = [
+  {
+    title: "Web app",
+    label: "Next.js · Browser",
+    body: "Public pages, sign-in, the user dashboard, invoice and usage history, wallet payment controls, and admin tools.",
+    Icon: Wallet,
+    tone: "text-cyan-200",
+  },
+  {
+    title: "Application API",
+    label: "Express · TypeScript",
+    body: "Authenticates requests, validates prompts, creates invoices, checks payment state, runs paid AI requests, and serves admin endpoints.",
+    Icon: Server,
+    tone: "text-emerald-200",
+  },
+  {
+    title: "Persistent records",
+    label: "PostgreSQL · Prisma",
+    body: "Stores accounts, invoices, payment status, prompts, AI results, usage, and website activity for the dashboards.",
+    Icon: Database,
+    tone: "text-sky-200",
+  },
+  {
+    title: "Payment network",
+    label: "Bitcoin Cash",
+    body: "Users send the quoted amount to a fresh invoice address. The server watches the chain using its receiving wallet's xpub; it does not hold that wallet's spending key.",
+    Icon: Network,
+    tone: "text-orange-200",
+  },
+  {
+    title: "AI provider",
+    label: "Gemini",
+    body: "After payment is verified, the server sends the selected feature and prompt to Gemini, then stores and returns the result.",
+    Icon: Bot,
+    tone: "text-violet-200",
+  },
+  {
+    title: "Operations & analytics",
+    label: "Admin · Optional Redis",
+    body: "Admin pages summarize users, invoices, and activity. Redis can queue tracking events; tracking falls back to direct database writes when Redis is not configured.",
+    Icon: Activity,
+    tone: "text-amber-200",
+  },
+];
+
 const CURL = `# 1. Ask. The server answers 402 with an invoice.
 curl -X POST ${API_BASE}/insight \\
   -H "Content-Type: application/json" \\
@@ -166,28 +223,66 @@ const ghostBtn =
 
 export default function BlazePage() {
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-24 pt-10 sm:px-6 sm:pt-14">
-      {/* Header */}
-      <header className="max-w-3xl">
-        <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
-          Pay in Bitcoin Cash.
-          <br />
-          Get your AI answer.
-        </h1>
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-400">
-          BCH Blaze sells AI answers one request at a time. There is no subscription and no card. You pay a few cents
-          in BCH, the server confirms the payment on the blockchain, and the answer is released. This page walks
-          through exactly what happens, step by step.
-        </p>
-        <div className="mt-7 flex flex-wrap gap-3">
-          <Link href="/dashboard/market_insight_invoices" className={primaryBtn}>
-            Try it now
-            <ArrowUpRight className="size-4" />
-          </Link>
-          <Link href="/docs" className={ghostBtn}>
-            <Terminal className="size-4" />
-            API docs
-          </Link>
+    <div className="blaze-page mx-auto max-w-5xl px-4 pb-24 pt-10 sm:px-6 sm:pt-14">
+      <style>{`
+        @keyframes blaze-rise {
+          from { opacity: 0; transform: translate3d(0, 18px, 0); }
+          to { opacity: 1; transform: translate3d(0, 0, 0); }
+        }
+        @keyframes blaze-drift {
+          0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+          50% { transform: translate3d(12px, -10px, 0) scale(1.05); }
+        }
+        @keyframes blaze-pulse {
+          0%, 100% { opacity: .45; box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); }
+          50% { opacity: 1; box-shadow: 0 0 0 7px rgba(52, 211, 153, 0); }
+        }
+        .blaze-enter { opacity: 0; animation: blaze-rise .7s cubic-bezier(.22, 1, .36, 1) forwards; }
+        .blaze-glow { animation: blaze-drift 9s ease-in-out infinite; }
+        .blaze-live-dot { animation: blaze-pulse 2.4s ease-out infinite; }
+        @media (prefers-reduced-motion: reduce) {
+          .blaze-enter { opacity: 1; animation: none; }
+          .blaze-glow, .blaze-live-dot { animation: none; }
+        }
+      `}</style>
+
+      <header className="relative isolate overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] px-5 py-9 sm:px-9 sm:py-12">
+        <div
+          aria-hidden
+          className="blaze-glow pointer-events-none absolute -right-20 -top-32 -z-10 size-80 rounded-full bg-emerald-500/15 blur-3xl"
+        />
+        <div className="blaze-enter max-w-3xl">
+          <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/5 px-3 py-1 text-xs font-medium text-emerald-200">
+            <span className="blaze-live-dot size-1.5 rounded-full bg-emerald-300" />
+            A complete pay-per-request AI system
+          </div>
+          <h1 className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">
+            Pay in Bitcoin Cash.
+            <br />
+            Get your AI answer.
+          </h1>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-gray-400">
+            BCH Blaze sells AI answers one request at a time. There is no subscription and no card. You pay a few cents
+            in BCH, the server confirms the payment on the blockchain, and only then releases the AI result. This page
+            explains the people, services, and steps behind the full system.
+          </p>
+          <div className="mt-7 flex flex-wrap gap-3">
+            <Link href="/dashboard/market_insight_invoices" className={primaryBtn}>
+              Try it now
+              <ArrowUpRight className="size-4" />
+            </Link>
+            <Link href="/docs" className={ghostBtn}>
+              <Terminal className="size-4" />
+              API docs
+            </Link>
+          </div>
+        </div>
+        <div className="blaze-enter mt-8 flex flex-wrap gap-2" style={{ animationDelay: "140ms" }}>
+          {["No subscription", "BCH payments", "AI after verification", "Public agent API"].map((item) => (
+            <span key={item} className="rounded-full border border-white/10 bg-black/20 px-3 py-1.5 text-xs text-gray-300">
+              {item}
+            </span>
+          ))}
         </div>
       </header>
 
@@ -218,6 +313,38 @@ export default function BlazePage() {
           See it move
         </SectionTitle>
         <SystemFlow />
+      </section>
+
+      <section className="mt-16">
+        <SectionTitle note="These services work together behind both the website and the account-free HTTP API.">
+          The full system, at a glance
+        </SectionTitle>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {SYSTEM_OVERVIEW.map(({ title, label, body, Icon, tone }, i) => (
+            <article
+              key={title}
+              className="blaze-enter group rounded-2xl border border-white/10 bg-white/[0.025] p-5 transition duration-300 hover:-translate-y-1 hover:border-emerald-400/25 hover:bg-emerald-400/[0.035]"
+              style={{ animationDelay: `${i * 75}ms` }}
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <p className="text-base font-semibold text-white">{title}</p>
+                  <p className="mt-1 text-xs text-gray-500">{label}</p>
+                </div>
+                <span className="rounded-xl border border-white/10 bg-black/20 p-2">
+                  <Icon aria-hidden className={`size-4 ${tone}`} />
+                </span>
+              </div>
+              <p className="mt-4 text-sm leading-relaxed text-gray-400">{body}</p>
+            </article>
+          ))}
+        </div>
+        <div className="mt-4 flex flex-wrap items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-4 py-3 text-xs text-gray-400">
+          <ShieldCheck aria-hidden className="size-4 shrink-0 text-emerald-300" />
+          <span>
+            Flow: <strong className="font-medium text-gray-200">request → invoice → BCH payment → server verification → Gemini → saved result</strong>
+          </span>
+        </div>
       </section>
 
       <section className="mt-16">
@@ -253,7 +380,7 @@ export default function BlazePage() {
       {/* Keys and money */}
       <section className="mt-16">
         <SectionTitle>Where your money and keys go</SectionTitle>
-        <div className="grid gap-4 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="rounded-2xl border border-white/10 bg-white/3 p-5">
             <KeyRound className="size-5 text-emerald-300" />
             <h3 className="mt-3 text-base font-semibold text-white">The server holds no spending keys</h3>
@@ -268,6 +395,15 @@ export default function BlazePage() {
             <p className="mt-2 text-sm leading-relaxed text-gray-400">
               If the AI call fails after you paid, the page shows <strong className="font-medium text-white">Retry
               (already paid)</strong>. It runs the same invoice again without charging you twice.
+            </p>
+          </div>
+          <div className="rounded-2xl border border-amber-400/20 bg-amber-400/[0.035] p-5">
+            <KeyRound className="size-5 text-amber-200" />
+            <h3 className="mt-3 text-base font-semibold text-white">Quick-pay key stays in your browser</h3>
+            <p className="mt-2 text-sm leading-relaxed text-gray-400">
+              Optional multi-run quick pay uses a separate session wallet whose private key is stored in this
+              browser&apos;s local storage. Keep the balance small and withdraw unused funds before clearing browser data
+              or changing devices.
             </p>
           </div>
         </div>
