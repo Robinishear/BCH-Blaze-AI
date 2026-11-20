@@ -12,7 +12,8 @@ export type TrackEventType =
   | "form_submit"
   | "custom";
 
-export type TrackProps = Record<string, string | number | boolean | null | undefined>;
+
+  export type TrackProps = Record<string, string | number | boolean | null | undefined>;
 
 export interface TrackEvent {
   type: TrackEventType;

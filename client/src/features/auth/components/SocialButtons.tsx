@@ -30,7 +30,7 @@ function GithubIcon(props: ComponentProps<"svg">) {
 
 const PROVIDERS = [
   { id: "google", label: "Continue with Google", Icon: GoogleIcon },
-  { id: "github", label: "Continue with GitHub", Icon: GithubIcon },
+  // { id: "github", label: "Continue with GitHub", Icon: GithubIcon },
 ] as const;
 
 export default function SocialButtons() {

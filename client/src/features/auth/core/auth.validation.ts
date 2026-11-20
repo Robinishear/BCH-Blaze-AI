@@ -12,7 +12,6 @@ export const loginValidationSchema = z.object({
   password: z.string().min(1, { message: "Password is required" }),
 });
 
-
 export const forgotPasswordValidationSchema = z.object({
   email: z.string().email("Enter a valid email address"),
 });

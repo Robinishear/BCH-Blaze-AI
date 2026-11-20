@@ -11,6 +11,7 @@ export const loginUserAction = async (payload: LoginPayload) => {
   return { body, setCookie };
 };
 
+
 export const logoutUserAction = async () => {
   return httpClient.post("/auth/logout", {});
 };

@@ -17,7 +17,6 @@ export async function handleRegister(prevState: any, formData: FormData) {
   };
 
   const validatedFields = registerValidationSchema.safeParse(rawData);
-
   if (!validatedFields.success) {
     const errorMessages = validatedFields.error.flatten().fieldErrors;
     const firstError =

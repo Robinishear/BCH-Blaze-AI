@@ -6,6 +6,8 @@
 // export const socialLogin = (provider: "google" | "github") =>
 //   authClient.signIn.social({
 //     provider,
+// //     callbackURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/success`,
+
 //     callbackURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/success`,
 //     errorCallbackURL: `${window.location.origin}/login`,
 //   });import { createAuthClient } from "better-auth/react";

@@ -4,6 +4,14 @@ export interface ApiResponse<T> {
   data: T;
 }
 
+
+
+export interface RegisterPayload {
+  name: string;
+  email: string;
+  password: string;
+}
+
 export interface UserResponse {
   id: string;
   name: string;
@@ -12,12 +20,6 @@ export interface UserResponse {
   accessToken?: string;
   refreshToken?: string;
   token?: string; 
-}
-
-export interface RegisterPayload {
-  name: string;
-  email: string;
-  password: string;
 }
 
 export interface LoginPayload {
