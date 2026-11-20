@@ -5,7 +5,6 @@
 // };
 
 // export default nextConfig;
-
 import type { NextConfig } from "next";
 
 const BACKEND = new URL(process.env.NEXT_PUBLIC_API_BASE_URL as string).origin;

@@ -8,16 +8,15 @@
 //     provider,
 //     callbackURL: `${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/social/success`,
 //     errorCallbackURL: `${window.location.origin}/login`,
-//   });
-import type { NextConfig } from "next";
+//   });import { createAuthClient } from "better-auth/react";
 
-const BACKEND = new URL(process.env.NEXT_PUBLIC_API_BASE_URL as string).origin;
+import { createAuthClient } from "better-auth/react";
 
-const nextConfig: NextConfig = {
-  output: "standalone",
-  async rewrites() {
-    return [{ source: "/api/:path*", destination: `${BACKEND}/api/:path*` }];
-  },
-};
+export const authClient = createAuthClient(); 
 
-export default nextConfig;
+export const socialLogin = (provider: "google" | "github") =>
+  authClient.signIn.social({
+    provider,
+    callbackURL: `${window.location.origin}/api/v1/auth/social/success`,
+    errorCallbackURL: `${window.location.origin}/login`,
+  });
