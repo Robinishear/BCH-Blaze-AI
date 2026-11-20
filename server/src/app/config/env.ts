@@ -19,6 +19,8 @@ interface EnvConfig {
   REFRESH_TOKEN_EXPIRES_IN: string;
   CHAIN_MODE: string;
   
+
+
   AUTH: {
     BETTER_AUTH_SECRET: string;
     BETTER_AUTH_URL: string;
@@ -51,6 +53,10 @@ interface EnvConfig {
   SMTP_PASS: string;
   SMTP_FROM: string;
 };
+BREVO_MAIL: {
+  BREVO_API_KEY: string;
+  MAIL_FROM: string;
+};
 }
 
 const loadEnvVariables = (): EnvConfig => {
@@ -69,6 +75,10 @@ const loadEnvVariables = (): EnvConfig => {
     "REFRESH_TOKEN_SECRET",
     "ACCESS_TOKEN_EXPIRES_IN",
     "REFRESH_TOKEN_EXPIRES_IN",
+
+    "BREVO_API_KEY",
+    "MAIL_FROM",
+
 
     "GOOGLE_CLIENT_ID",
     "GOOGLE_CLIENT_SECRET",
@@ -180,6 +190,10 @@ const loadEnvVariables = (): EnvConfig => {
      SMTP_USER: process.env.SMTP_USER as string,
      SMTP_PASS: process.env.SMTP_PASS as string,
      SMTP_FROM: process.env.SMTP_FROM as string,
+},
+BREVO_MAIL: {
+  BREVO_API_KEY: process.env.BREVO_API_KEY as string,
+  MAIL_FROM: process.env.MAIL_FROM as string,
 },
   };
 };

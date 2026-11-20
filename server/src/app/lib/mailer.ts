@@ -12,7 +12,7 @@ const transporter = nodemailer.createTransport({
   auth: { user: envVars.SMTP.SMTP_USER, pass: envVars.SMTP.SMTP_PASS },
 });
 
-const APP_NAME = "BCH BLAZE";
+const APP_NAME = "BCH BLAZE AI";
 const TAGLINE = "Build fast. Pay instantly. Powered by Bitcoin Cash.";
 const EXPIRY_MINUTES = 10;
 
@@ -253,21 +253,52 @@ const renderResetEmail = (otp: string, to: string) => {
 </html>`;
 };
 
-export const sendResetOtpEmail = (to: string, otp: string) =>
-  transporter.sendMail({
-    from: envVars.SMTP.SMTP_FROM,
-    to,
-    subject: `${otp} is your ${APP_NAME} reset code`,
-    headers: { "Auto-Submitted": "auto-generated" },
-    attachments: hasLogo ? [{ filename: "logo.png", path: LOGO_PATH, cid: LOGO_CID }] : [],
-    text: [
-      `Reset your ${APP_NAME} password`,
-      ``,
-      `Your verification code: ${otp}`,
-      `It expires in ${EXPIRY_MINUTES} minutes and works only once.`,
-      ``,
-      `Never share this code with anyone.`,
-      `If you did not request this, you can safely ignore this email.`,
-    ].join("\n"),
-    html: renderResetEmail(otp, to),
+// export const sendResetOtpEmail = (to: string, otp: string) =>
+//   transporter.sendMail({
+//     from: envVars.SMTP.SMTP_FROM,
+//     to,
+//     subject: `${otp} is your ${APP_NAME} reset code`,
+//     headers: { "Auto-Submitted": "auto-generated" },
+//     attachments: hasLogo ? [{ filename: "logo.png", path: LOGO_PATH, cid: LOGO_CID }] : [],
+//     text: [
+//       `Reset your ${APP_NAME} password`,
+//       ``,
+//       `Your verification code: ${otp}`,
+//       `It expires in ${EXPIRY_MINUTES} minutes and works only once.`,
+//       ``,
+//       `Never share this code with anyone.`,
+//       `If you did not request this, you can safely ignore this email.`,
+//     ].join("\n"),
+//     html: renderResetEmail(otp, to),
+//   });
+
+// Brevo 
+export const sendResetOtpEmail = async (to: string, otp: string) => {
+  const res = await fetch("https://api.brevo.com/v3/smtp/email", {
+    method: "POST",
+    headers: {
+      "api-key": envVars.BREVO_MAIL.BREVO_API_KEY,
+      "content-type": "application/json",
+      accept: "application/json",
+    },
+    body: JSON.stringify({
+      sender: { name: APP_NAME, email: envVars.BREVO_MAIL.MAIL_FROM },
+      to: [{ email: to }],
+      subject: `${otp} is your ${APP_NAME} reset code`,
+      htmlContent: renderResetEmail(otp, to),
+      textContent: [
+        `Reset your ${APP_NAME} password`,
+        ``,
+        `Your verification code: ${otp}`,
+        `It expires in ${EXPIRY_MINUTES} minutes and works only once.`,
+        ``,
+        `Never share this code with anyone.`,
+        `If you did not request this, you can safely ignore this email.`,
+      ].join("\n"),
+    }),
   });
+
+  if (!res.ok) {
+    throw new Error(`Brevo ${res.status}: ${await res.text()}`);
+  }
+};
