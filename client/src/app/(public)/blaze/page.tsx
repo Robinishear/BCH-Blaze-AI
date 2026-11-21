@@ -271,10 +271,20 @@ export default function BlazePage() {
               Try it now
               <ArrowUpRight className="size-4" />
             </Link>
-            <Link href="/docs" className={ghostBtn}>
+            {/* <Link href="/https://github.com/Robinishear/BCH-Blaze-AI/blob/main/README.md" className={ghostBtn}>
               <Terminal className="size-4" />
               API docs
-            </Link>
+            </Link> */}
+
+            <Link
+  href="https://github.com/Robinishear/BCH-Blaze-AI/blob/main/README.md"
+  target="_blank"
+  rel="noopener noreferrer"
+  className={ghostBtn}
+>
+  <Terminal className="size-4" />
+  API docs
+</Link>
           </div>
         </div>
         <div className="blaze-enter mt-8 flex flex-wrap gap-2" style={{ animationDelay: "140ms" }}>
