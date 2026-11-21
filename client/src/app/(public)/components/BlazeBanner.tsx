@@ -9,7 +9,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 const EVENT = { name: 'BCH BLAZE 2026', track: 'Mainnet Track' };
-const PRESENTATION_URL = 'https://docs.google.com/presentation/d/...';
+// const PRESENTATION_URL = 'https://docs.google.com/presentation/d/...';
+const PRESENTATION_URL = 'https://docs.google.com/presentation/d/1WIeqcOh9E5GoQmr7C5Cx34vciwGmKZGqSYi5gd3Bv40/edit';
 const REPO_URL = 'https://github.com/Robinishear/BCH-Blaze-AI';
 const EMBER_ADDRESS = 'bitcoincash:zpfug783apup8mzxmtgtxwhl6h9kjty5mc0trt2spu';
 
