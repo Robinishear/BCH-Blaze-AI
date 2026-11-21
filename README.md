@@ -4,8 +4,9 @@
 
 > Built for **BCH BLAZE 2026** (DoraHacks) · Mainnet Track · solo project
 
-**Live demo:** `https://bch-blaze-client.onrender.com/`
-**Presentation:** `<PASTE-PRESENTATION-URL-HERE>`
+**🚀 Live Demo:** [BCH Blaze AI](https://bch-blaze-client.onrender.com/)
+
+**📊 Project Presentation:** [View Presentation](https://docs.google.com/presentation/d/1WIeqcOh9E5GoQmr7C5Cx34vciwGmKZGqSYi5gd3Bv40/edit?slide=id.p1#slide=id.p1)
 
 > ⚠️ **Mainnet notice.** The production configuration uses real Bitcoin Cash. Transactions are irreversible. Every paid request costs a few US cents of real BCH.
 
